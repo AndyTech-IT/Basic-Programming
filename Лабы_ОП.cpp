@@ -218,7 +218,7 @@ void LR_4_1()
 		}
 		else
 		{
-			cout << "Индекс за пределами массива!\n" << endl;
+			cout << "Индекс за пределами массива!" << endl;
 		}
 	}
 
@@ -234,8 +234,7 @@ void LR_4_1()
 			found_start = true;
 		}
 		else
-			if (found_end == false 
-			&&	arr[i] == 0)			// Второй ноль найден
+			if (arr[i] == 0)			// Второй ноль найден
 			{
 				end = i;
 				found_end = true;
