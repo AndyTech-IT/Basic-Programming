@@ -340,15 +340,54 @@ void LR_4_2()
 }
 #pragma endregion
 
+#pragma region PR 3
 
+#include <string.h>
+#include <string>
+
+void PR_3() {
+	string line = "";
+	cout << "Введите строку: ";
+	getline(cin, line);
+
+	for (auto &c : line)
+	{
+		if ('а' <= c && c <= 'я'
+		||	'А' <= c && c <= 'Я'
+		||	'ё' == c || c == 'Ё')
+		{
+			c = '+';
+			continue;
+		} 
+
+		if ('a' <= c && c <= 'z'
+		||	'A' <= c && c <= 'Z')
+		{
+			c = '-';
+			continue;
+		}
+
+		if (c != ' ')
+		{
+			c = '=';
+			continue;
+		}
+	}
+
+	cout << "Итоговая строка : " << line << endl;
+}
+#pragma endregion
+
+
+const auto RusCharset = 1251;
 
 void main() 
 {
-	SetConsoleCP(RUSSIAN_CHARSET);
-	SetConsoleOutputCP(RUSSIAN_CHARSET);
+	SetConsoleCP(RusCharset);
+	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	LR_4_2();
+	PR_3();
 	cout << endl;
 
 	system("pause");
