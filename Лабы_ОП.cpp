@@ -253,7 +253,6 @@ void LR_4_1()
 		if (found_end == false)	// Ноль одит
 		{
 			end = start;
-			start = 0;
 		}
 		else
 		{
@@ -350,7 +349,7 @@ void PR_3() {
 	cout << "Введите строку: ";
 	getline(cin, line);
 
-	for (auto &c : line)
+	for (char &c : line)
 	{
 		if ('а' <= c && c <= 'я'
 		||	'А' <= c && c <= 'Я'
@@ -379,15 +378,105 @@ void PR_3() {
 #pragma endregion
 
 
+#pragma region LR 5
+
+void LR_5_1() {
+	string line = "";
+	string symbols = " «.!,?:;\'\"";
+
+	cout << "Введите строку: " << endl;
+	getline(cin, line);
+
+	bool found = true;	// Первый символ тоже надо
+
+	for (char& c : line) {
+		char* index = strchr((char*)symbols.c_str(), c);
+		if (index != nullptr)
+		{
+			found = true;
+			continue;
+		} 
+		if (found)
+		{
+			if ('a' <= c && c <= 'z')
+				c = c - 'a' + 'A';
+
+			if ('а' <= c && c <= 'я'
+			||	'ё' == c)
+				c = c - 'а' + 'А';
+
+			found = false;
+			continue;
+		}
+
+	}
+	cout << line;
+}
+
+void LR_5_2() {
+	string line = "";
+	string symbols = " «.!,?:;\'\"\0";
+
+	string long_word = "";
+	string short_word = "";
+
+	cout << "Введите строку: " << endl;
+	getline(cin, line);
+	line += '\0'; // Добавляем тк при считаовании его нет, а он нужен!
+
+	bool write = true;	// Первый символ тоже надо
+	string word = "";	// Буфер
+
+	for (char& c : line) {
+		char* index = strchr((char*)symbols.c_str(), c);
+		if (index != nullptr)	// с - разделительный символ
+		{
+			if (write)	// Мы закончили слово
+			{
+				int len = word.length();
+				if (len > long_word.length())
+				{
+					long_word = word;
+				}
+
+				if (len < short_word.length() || short_word.length() == 0)
+				{
+					short_word = word;
+				}
+
+				write = false;
+			}
+			continue;	// Скипаем хвост
+		}
+
+		if (write == false)	// Начало слова
+		{
+			word = "";
+			write = true;
+		}
+
+		if (write)	// Запись слова в буфер
+			word += c;
+	}
+
+	// Вывод результата
+	cout << "Короткое слово: " << short_word << endl;
+	cout << "Длинное слово: " << long_word;
+}
+
+#pragma endregion
+
+
 const auto RusCharset = 1251;
 
 void main() 
 {
+	// 3 Вариант
 	SetConsoleCP(RusCharset);
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	PR_3();
+	LR_5_2();
 	cout << endl;
 
 	system("pause");
