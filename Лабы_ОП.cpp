@@ -344,7 +344,7 @@ void LR_4_2()
 #include <string.h>
 #include <string>
 
-void PR_3() {
+void PR_3_1() {
 	string line = "";
 	cout << "Введите строку: ";
 	getline(cin, line);
@@ -372,6 +372,27 @@ void PR_3() {
 			continue;
 		}
 	}
+
+	cout << "Итоговая строка : " << line << endl;
+}
+#include <regex>
+
+void PR_3_2() {
+	string line = "";
+	cout << "Введите строку: ";
+	getline(cin, line);
+
+	regex other_regexp("[0-9\!-\-@\^\_%;:?№]");
+
+	line = regex_replace(line, other_regexp, "=");
+
+	regex en_regexp("[a-zA-Z]");
+	
+	line = regex_replace(line, en_regexp, "-");
+
+	regex ru_regexp("[а-яА-ЯёЁ]");
+
+	line = regex_replace(line, ru_regexp, "+");
 
 	cout << "Итоговая строка : " << line << endl;
 }
@@ -466,6 +487,33 @@ void LR_5_2() {
 
 #pragma endregion
 
+#pragma region PR 4
+int Fibonachi(int end, int curent = 0, int before1 = 0, int before2 = 0)
+{
+	if (end == curent) 
+	{
+		return before1 + before2;
+	}
+	if (curent == 1 || curent == 0)
+		return Fibonachi(end, curent + 1, 1, 0);
+	if (curent == 2)
+	{
+		return Fibonachi(end, curent + 1, 1, 1);
+	}
+	return Fibonachi(end, curent + 1, before1 + before2, before1);
+}
+
+void PR_4() 
+{
+	int n;
+	cout << "Номер числа фибоначи: ";
+	cin >> n;
+	int result = Fibonachi(n);
+	cout << "Число фибоначи под номером " << n << " = " << result;
+}
+#pragma endregion
+
+
 
 const auto RusCharset = 1251;
 
@@ -476,7 +524,7 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	LR_5_2();
+	PR_4();
 	cout << endl;
 
 	system("pause");
