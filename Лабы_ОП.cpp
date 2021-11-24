@@ -422,9 +422,11 @@ void LR_5_1() {
 			if ('a' <= c && c <= 'z')
 				c = c - 'a' + 'A';
 
-			if ('а' <= c && c <= 'я'
-			||	'ё' == c)
+			if ('а' <= c && c <= 'я')
 				c = c - 'а' + 'А';
+
+			if (c == 'ё')
+				c = 'Ё';
 
 			found = false;
 			continue;
@@ -488,19 +490,17 @@ void LR_5_2() {
 #pragma endregion
 
 #pragma region PR 4
-int Fibonachi(int end, int curent = 0, int before1 = 0, int before2 = 0)
+int Fibonachi(int end)
 {
-	if (end == curent) 
+	if (end <= 0)
 	{
-		return before1 + before2;
+		return 0;
 	}
-	if (curent == 1 || curent == 0)
-		return Fibonachi(end, curent + 1, 1, 0);
-	if (curent == 2)
+	if (end == 1 || end == 2)
 	{
-		return Fibonachi(end, curent + 1, 1, 1);
+		return 1;
 	}
-	return Fibonachi(end, curent + 1, before1 + before2, before1);
+	return Fibonachi(end - 1) + Fibonachi(end - 2);
 }
 
 void PR_4() 
@@ -511,6 +511,78 @@ void PR_4()
 	int result = Fibonachi(n);
 	cout << "Число фибоначи под номером " << n << " = " << result;
 }
+#pragma endregion
+
+#pragma region LR 6
+int MaxChainLenght(string str) 
+{
+	char chain_c = str[0];
+	int max_len = 0;
+	int curent_len = 0;
+	for (char c : str) 
+	{
+		if (c == chain_c) 
+		{
+			curent_len++;
+		}
+		else
+		{
+			chain_c = c;
+			max_len = curent_len > max_len ? curent_len : max_len;
+			curent_len = 1;
+		}
+	}
+	return max_len;
+}
+
+void LR_6_1() 
+{
+	string str;
+	cout << "Введите строку: ";
+	getline(cin, str);
+	str += '\0';
+
+	int max_len = MaxChainLenght(str);
+
+	cout << "Длинна максимальной последовательности символов = " << max_len;
+}
+
+float GetAvarage_InRange(int arr[], int size, int index1, int index2) 
+{
+
+	int begin = max(min(index1, index2), 0) + 1;
+	int end = min(max(index1, index2), size) - 1;
+	if (end - begin <= 0)
+		return 0;
+
+	double summ = 0;
+	for (int i = begin; i < end; i++)
+		summ += arr[i];
+	return summ / (end - begin);
+}
+
+void LR_6_2() 
+{
+	int size;
+	cout << "Введите размер массива: ";
+	cin >> size;
+
+	int* arr = new int[size];
+	for (int i = 0; i < size; i++)
+	{
+		cout << "Введите число " << i + 1 << " : ";
+		cin >> arr[i];
+	}
+
+	int i1, i2;
+
+	cout << "Введите интервал(2 числа): ";
+	cin >> i1 >> i2;
+
+	double avarage = GetAvarage_InRange(arr, size, i1, i2);
+	cout << "Среднее значение в интервале = " << avarage;
+}
+
 #pragma endregion
 
 
@@ -524,7 +596,7 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	PR_4();
+	LR_6_2();
 	cout << endl;
 
 	system("pause");
