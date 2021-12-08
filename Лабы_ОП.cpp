@@ -585,6 +585,100 @@ void LR_6_2()
 
 #pragma endregion
 
+#pragma region PR 5
+
+void F1()
+{
+	int a;
+	int* a_ptr = &a;
+	cout << "Enter a: ";
+	cin >> a;
+	cout << *a_ptr << endl << endl;
+}
+void F2()
+{
+	int a, b;
+	cout << "Enter a, b: ";
+	cin >> a >> b;
+	int* pa = &a, * pb = &b;
+	int summ = *pa + *pb;
+	int razn = *pa - *pb;
+	pa = &summ;
+	pb = &razn;
+	cout << "Summ = " << *pa << endl;
+	cout << "Razn = " << *pb << endl;
+}
+
+void Add10(double& t)
+{
+	t += 10;
+}
+
+void F3()
+{
+	double t;
+	cout << "Enter t: ";
+	cin >> t;
+	Add10(t);
+	cout << "Result = " << t << endl;
+}
+
+const int Z = 10;
+
+void RondomizeFilling(int* m)
+{
+	for (int i = 0; i < Z; i++)
+	{
+		*(m + i) = rand() % 100 + 1;
+	}
+}
+
+void F4()
+{
+	int mass[Z];
+	RondomizeFilling(mass);
+	for (int i = 0; i < Z; i++)
+	{
+		cout << *(mass + i) << ' ';
+	}
+	cout << endl;
+}
+
+#pragma endregion
+
+#pragma region LR 7
+
+int FindeAvarage(double mass[], double& size)
+{
+	double avarage = 0;
+	for (int i = 0; i < size; i++)
+		avarage += *(mass + i);
+	avarage /= size;
+	int count = 0;
+	for (int i = 0; i < size; i++)
+		*(mass + i) < avarage ? count++ : NULL;
+	size = avarage;
+	return count;
+}
+
+void LR_7()
+{
+	int size;
+	double* mass;
+	cout << "Enter size: ";
+	cin >> size;
+	double avarage = size;
+	mass = new double[size];
+	for (int i = 0; i < size; i++)
+	{
+		cout << "Enter number " << i + 1 << " : ";
+		cin >> *(mass + i);
+	}
+	int count_lower_avarage = FindeAvarage(mass, avarage);
+	cout << "Numbers lower then " << avarage << " : " << count_lower_avarage << endl;
+}
+
+#pragma endregion
 
 
 const auto RusCharset = 1251;
