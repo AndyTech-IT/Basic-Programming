@@ -410,7 +410,8 @@ void LR_5_1() {
 
 	bool found = true;	// Первый символ тоже надо
 
-	for (char& c : line) {
+	for (char& c : line) 
+	{
 		char* index = strchr((char*)symbols.c_str(), c);
 		if (index != nullptr)
 		{
@@ -419,14 +420,7 @@ void LR_5_1() {
 		} 
 		if (found)
 		{
-			if ('a' <= c && c <= 'z')
-				c = c - 'a' + 'A';
-
-			if ('а' <= c && c <= 'я')
-				c = c - 'а' + 'А';
-
-			if (c == 'ё')
-				c = 'Ё';
+			c = toupper(c);
 
 			found = false;
 			continue;
@@ -549,7 +543,6 @@ void LR_6_1()
 
 float GetAvarage_InRange(int arr[], int size, int index1, int index2) 
 {
-
 	int begin = max(min(index1, index2), 0) + 1;
 	int end = min(max(index1, index2), size) - 1;
 	if (end - begin <= 0)
@@ -572,7 +565,7 @@ void LR_6_2()
 	{
 		cout << "Введите число " << i + 1 << " : ";
 		cin >> arr[i];
-	}
+	} 
 
 	int i1, i2;
 
@@ -680,6 +673,46 @@ void LR_7()
 
 #pragma endregion
 
+#pragma region LR 8
+
+char* Cut_String(const char text[], char* &first_halh)
+{
+	int len = strlen(text);
+	int first_half_len = len / 2;
+	int second_half_len = len - first_half_len;
+
+	first_halh = new char[first_half_len + 1]{'\0'};
+	char* second_half = new char[second_half_len + 1]{'\0'};
+
+	for (int i = 0; i < len; i++)
+	{
+		char c = *(text + i);
+		if (i < first_half_len)
+			*(first_halh + i) = c;
+		else
+			*(second_half + i - first_half_len) = c;			
+	}
+	*(first_halh + first_half_len) = '\0';
+	*(second_half + second_half_len) = '\0';
+	return second_half;
+}
+
+void LR_8()
+{
+	string line;
+	cout << "Enter some text:";
+	getline(cin, line);
+	char* first_half;
+	char* second_half;
+
+	second_half = Cut_String(line.c_str(), first_half);
+
+	cout << "First half: " << first_half << "\nSecond half: " << second_half;
+
+	delete[] second_half, first_half;
+}
+#pragma endregion
+
 
 const auto RusCharset = 1251;
 
@@ -690,7 +723,7 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	LR_6_2();
+	LR_8();
 	cout << endl;
 
 	system("pause");
