@@ -713,6 +713,73 @@ void LR_8()
 }
 #pragma endregion
 
+#pragma region PR 6
+
+void PrintBits(unsigned char data)
+{
+	unsigned char p = 1; // переменная для проверки разрядов
+	static int size = sizeof(char) * 8; // количество бит в числе
+
+	for (int i = 0; i < size; i++, p<<=1)
+		data & p ? cout << 1 : cout << 0; // проверка разряда
+
+	cout << endl;
+}
+
+void SwitchBit_byAdress(unsigned char& data, int n) 
+{
+	data ^= (1 << (n - 1));
+}
+
+void PR_6_1()
+{
+	unsigned char a = 0; //число, которое переводится в двоичный код
+	PrintBits(a);
+	int n = 0;
+	while (true)
+	{
+		cout << "Enter n : ";
+		cin >> n;
+		if (n == 0)
+			break;
+		if (0 < n && n <= 8)
+		{
+			SwitchBit_byAdress(a, n);
+			PrintBits(a);
+		}
+		else
+			cout << "Wrong byte adress!" << endl;
+	}
+}
+
+void PR_6_2()
+{
+	unsigned int a; //число, которое переводится в двоичный код
+
+	unsigned int p = 1 << 4*7; // переменная для проверки разрядов
+
+	int size = sizeof(int) * 8; // количество бит в числе
+
+	cout << "Enter a number: ";
+	cin >> a;
+
+	bool first = false;
+
+	for (int i = size - 1; i > 2; i--, p>>=1) 
+	{
+		if (a & p)
+		{
+			first = true;
+			cout << 1;
+		} 
+		else if (first)
+			cout << 0; 
+	}
+}
+
+#pragma endregion
+
+
 
 const auto RusCharset = 1251;
 
@@ -723,7 +790,7 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	LR_8();
+	PR_6_2();
 	cout << endl;
 
 	system("pause");
