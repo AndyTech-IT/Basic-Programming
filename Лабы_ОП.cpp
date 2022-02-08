@@ -3,6 +3,7 @@
 #include <string.h>
 #include <string>
 #include <regex>
+#include <math.h>
 
 using namespace std;
 
@@ -954,6 +955,7 @@ namespace Sem_2
 
 		int comand_num;
 		cin >> comand_num;
+		cout<< endl;
 
 		if (comand_num < 0 || 5 < comand_num)
 		{
@@ -1033,6 +1035,7 @@ namespace Sem_2
 
 		cout << "Enter part price: ";
 		cin >> prices[count];
+
 		count++;
 	}
 
@@ -1051,7 +1054,6 @@ namespace Sem_2
 			cin >> number;
 			break;
 		}
-		number;
 
 		if (number < 1 || count < number)
 		{
@@ -1073,6 +1075,7 @@ namespace Sem_2
 			types[i - 1] = types[i];
 			prices[i - 1] = prices[i];
 		}
+
 		count--;
 	}
 
@@ -1098,7 +1101,7 @@ namespace Sem_2
 	{
 		for (int i = 0; i < count; i++)
 		{
-			for (int j = 0; j < i - 1; j++)
+			for (int j = 0; j < count - i - 1; j++)
 				if (prices[j] < prices[j + 1])
 				{
 					string temp_n = names[j];
@@ -1115,6 +1118,7 @@ namespace Sem_2
 				}
 		}
 	}
+
 	void Show_Chipest(string* names, PartType* types, double* prices, int& count, const int max_count)
 	{
 		int tupes_min_nums[7] = {-1, -1, -1, -1, -1, -1, -1};
@@ -1175,6 +1179,168 @@ namespace Sem_2
 
 	#pragma endregion
 
+	#pragma region LR 1
+
+	#pragma region Practice
+
+	struct Point3 
+	{
+		int x;
+		int y;
+		int z;
+	};
+
+	void Print(Point3 points[], int count)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			cout << "Vector " << i << ": (" << points[i].x << ", " << points[i].y << ", " << points[i].z << ");" << endl;
+		}
+	}
+
+	Point3 Get_Niarest_To_Center(Point3 points[], int count)
+	{
+		double shortest_distance = -1;
+		Point3 nearest_point;
+		int i = 0;
+		do {
+			Point3 point = points[i];
+			double distance = sqrt(pow(point.x, 2) + pow(point.y, 2) + pow(point.z, 2));
+			if (shortest_distance == -1 || shortest_distance > distance)
+			{
+				shortest_distance = distance;
+				nearest_point = point;
+			}
+			i++;
+		} while (i < count);
+		return nearest_point;
+	}
+	void LR_1_P_1()
+	{
+		Point3 points[6]{ {1, 2, 3}, {1, 2, -2} , {1, 1, 0}, {1, 1, 1}, {1, 0, 0}, {-1, -2, 1} };
+		Print(points, 6);
+		cout << endl;
+		Point3 nearest[] = { Get_Niarest_To_Center(points, 6) };
+		cout << "Nearest is ";
+		Print(nearest, 1);
+		cout << endl;
+	}
+
+	#define Work_Binary(operation, bin_int, prefix, postfix)	\
+						operation prefix bin_int.b1 postfix;	\
+						operation prefix bin_int.b2 postfix;	\
+						operation prefix bin_int.b3 postfix;	\
+						operation prefix bin_int.b4 postfix;	\
+						operation prefix bin_int.b5 postfix;	\
+						operation prefix bin_int.b6 postfix;	\
+						operation prefix bin_int.b7 postfix; 	\
+						operation prefix bin_int.b8 postfix;	\
+						operation prefix bin_int.b9 postfix;	\
+						operation prefix bin_int.b10 postfix;	\
+						operation prefix bin_int.b11 postfix;	\
+						operation prefix bin_int.b12 postfix;	\
+						operation prefix bin_int.b13 postfix;	\
+						operation prefix bin_int.b14 postfix;	\
+						operation prefix bin_int.b15 postfix;	\
+						operation prefix bin_int.b16 postfix;  
+
+
+	union Int_With_Binary
+	{	
+		struct Bin_Int {
+			unsigned short int b1 : 1;
+			unsigned short int b2 : 1;
+			unsigned short int b3 : 1;
+			unsigned short int b4 : 1;
+			unsigned short int b5 : 1;
+			unsigned short int b6 : 1;
+			unsigned short int b7 : 1;
+			unsigned short int b8 : 1;
+			unsigned short int b9 : 1;
+			unsigned short int b10 : 1;
+			unsigned short int b11 : 1;
+			unsigned short int b12 : 1;
+			unsigned short int b13 : 1;
+			unsigned short int b14 : 1;
+			unsigned short int b15 : 1;
+			unsigned short int b16 : 1;
+		} Binary;
+		int Decemal;
+	};
+
+	void LR_1_P_2()
+	{
+		Int_With_Binary test;
+		cin >> test.Decemal;
+		Work_Binary(cout << ,test.Binary);
+		cout << endl;
+	}
+
+	#pragma endregion
+
+
+	struct Person
+	{
+		struct 
+		{
+			string SecondName;
+			string FirstName;
+			bool Has_MidleName;
+			string MidleName;
+		} Name;
+		string Adress;
+		string Phone_Number;
+	};
+
+	struct Linked_PersonPointers
+	{
+		Linked_PersonPointers* Next = NULL;
+		Linked_PersonPointers* Previos = NULL;
+		Person* Person;
+	};
+
+	Linked_PersonPointers* Add_In_List(Person* p, Linked_PersonPointers* tal)
+	{
+		Linked_PersonPointers* next = new Linked_PersonPointers;
+		next->Previos= tal;
+		next->Person = p;
+		tal->Next = next;
+		return next;
+	}
+
+	void Print(Person p)
+	{
+		cout << "Person: " << p.Name.SecondName << ' ' << p.Name.FirstName << ' ' << (p.Name.Has_MidleName ? p.Name.MidleName : "") << endl;
+		cout << '\t' << p.Adress << endl;
+		cout << '\t' << p.Phone_Number << endl;
+	}
+
+	void Print(Linked_PersonPointers* head)
+	{
+		Print(*head->Person);
+		if (head->Next)
+		{
+			cout << endl;
+			Print(head->Next);
+		}
+	}
+
+	void LR_1()
+	{
+		LR_1_P_1();
+		LR_1_P_2();
+
+		Linked_PersonPointers* head = new Linked_PersonPointers;
+		head->Person = new Person{ {"Иванов", "Иван", true, "Иванович"}, "Город Иванов ул. Иванова д. 3", "+7 (914) 348 34 65"};
+		Linked_PersonPointers* tal = Add_In_List(new Person{ {"Иванов", "Иван1", true, "Иванович"}, "Город Иванов ул. Иванова д. 2", "+7 (924) 412 34 65 "}, head);
+		tal = Add_In_List(new Person{ {"Иванов", "Иван2", true, "Иванович"}, "Город Иванов ул. Иванова д. 3", "+7 (924) 348 23 65 " }, head);
+
+		Print(head);
+	}
+
+	#pragma endregion
+
+
 
 #pragma endregion
 
@@ -1190,7 +1356,7 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	Sem_2::PR_0();
+	Sem_2::LR_1();
 	cout << endl;
 
 	system("pause");
