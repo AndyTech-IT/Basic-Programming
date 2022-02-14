@@ -1285,7 +1285,7 @@ namespace Sem_2
 		{
 			string SecondName;
 			string FirstName;
-			bool Has_MidleName;
+			bool Has_MidleName = false;
 			string MidleName;
 		} Name;
 		string Adress;
@@ -1299,25 +1299,27 @@ namespace Sem_2
 		Person* Person;
 	};
 
-	Linked_PersonPointers* Add_In_List(Person* p, Linked_PersonPointers* tal)
+	enum class PersonMenuCommand
 	{
-		Linked_PersonPointers* next = new Linked_PersonPointers;
-		next->Previos= tal;
-		next->Person = p;
-		tal->Next = next;
-		return next;
-	}
+		Exit,
+		Create,
+		Sort,
+		Edit,
+		Delete,
+		Show_All,
+		Search
+	};
 
-	void Print(Person p)
+	void Print(Person* p)
 	{
-		cout << "Person: " << p.Name.SecondName << ' ' << p.Name.FirstName << ' ' << (p.Name.Has_MidleName ? p.Name.MidleName : "") << endl;
-		cout << '\t' << p.Adress << endl;
-		cout << '\t' << p.Phone_Number << endl;
+		cout << "Person: " << p->Name.SecondName << ' ' << p->Name.FirstName << ' ' << (p->Name.Has_MidleName ? p->Name.MidleName : "") << endl;
+		cout << '\t' << p->Adress << endl;
+		cout << '\t' << p->Phone_Number << endl;
 	}
 
 	void Print(Linked_PersonPointers* head)
 	{
-		Print(*head->Person);
+		Print(head->Person);
 		if (head->Next)
 		{
 			cout << endl;
@@ -1325,17 +1327,158 @@ namespace Sem_2
 		}
 	}
 
+	Linked_PersonPointers* Add_In_List(Person* p, Linked_PersonPointers* tal = NULL)
+	{
+		Linked_PersonPointers* next = new Linked_PersonPointers;
+		next->Previos = tal;
+		next->Person = p;
+		if (tal != NULL)
+			tal->Next = next;
+		return next;
+	}
+
+	Linked_PersonPointers* Get_Linc_On_Index(int index, Linked_PersonPointers* head)
+	{
+		Linked_PersonPointers* curent = head;
+		int i = 0;
+		while (curent != NULL)
+		{
+			if (i == index)
+				break;
+			i++;
+			curent = curent->Next;
+		}
+		return curent;
+	}
+
+	void Remove_From_List(int index, Linked_PersonPointers* head)
+	{
+		if (head == NULL)
+		{
+			cout << "List is empty!" << endl;
+		}
+		
+		Linked_PersonPointers* deleting_person = Get_Linc_On_Index(index, head);
+
+		if (deleting_person)
+		{
+			cout << "Do you want to remove: " << endl;
+			Print(deleting_person->Person);
+			cout << "Y/N: ";
+			char c;
+			if (c != 'Y' && c != 'y')
+				return;
+
+			deleting_person->Previos->Next = deleting_person->Next;
+			deleting_person->Next->Previos = deleting_person->Previos;
+			delete deleting_person;
+		}
+		else
+		{
+			cout << "Index out of range!" << endl;
+		}
+	}
+
+	Person* Enter_Person_Data()
+	{
+		Person* creating_person = new Person();
+		cout << "Enter second name: ";
+		cin >> creating_person->Name.SecondName;
+		cout << "Enter first name: ";
+		cin >> creating_person->Name.FirstName;
+		cout << "Has middle name? (Y/N): ";
+		char c;
+		cin >> c;
+		if (c == 'Y' || c == 'y')
+		{
+			cout << "Enter midle name: ";
+			cin >> creating_person->Name.MidleName;
+			creating_person->Name.Has_MidleName = true;
+		}
+		cout << "Enter adress: ";
+		cin >> creating_person->Adress;
+		cout << "Enter phone number: ";
+		cin >> creating_person->Phone_Number;
+	}
+
+	void Create_Person(Linked_PersonPointers* head, Linked_PersonPointers* tail)
+	{
+		Person* creating_person = Enter_Person_Data();
+
+		if (head == NULL)
+			head = Add_In_List(creating_person);
+
+		else if (tail == NULL)
+			tail = Add_In_List(creating_person, head);
+
+		else
+			tail = Add_In_List(creating_person, tail);
+	}
+
+	void Delete_Person(Linked_PersonPointers* head, Linked_PersonPointers* tail)
+	{
+		cout << "Enter deleting person number: ";
+		int index;
+		cin >> index;
+		Remove_From_List(index, head);
+	}
+
+	void Edit_Person(Linked_PersonPointers* head, Linked_PersonPointers* tail)
+	{
+		int i;
+		cout << "Editing person number: ";
+		cin >> i;
+		Linked_PersonPointers* editing_person = Get_Linc_On_Index(i, head);
+		if (editing_person)
+			editing_person->Person = Enter_Person_Data();
+		else
+			cout << "Index out of range!" << endl;
+	}
+
+	void Update_PersonMenu(Linked_PersonPointers* head = NULL, Linked_PersonPointers* tail = NULL)
+	{
+		int i_c;
+		cout << "0) Close programm" << endl;
+		cout << "1) Create new Person" << endl;
+		cout << "2) Sort Persons list" << endl;
+		cout << "3) Edit existing Person" << endl;
+		cout << "4) Show all Persons" << endl;
+		cout << "5) Search Person by FIO" << endl;
+		cout << "Enter command number: ";
+		cin >> i_c;
+		cout << endl;
+
+		switch ((PersonMenuCommand)i_c)
+		{
+		case Sem_2::PersonMenuCommand::Exit:
+			return;
+
+		case Sem_2::PersonMenuCommand::Create:
+			Create_Person(head, tail);
+			break;
+		case Sem_2::PersonMenuCommand::Sort:
+			break;
+		case Sem_2::PersonMenuCommand::Edit:
+			Edit_Person(head, tail);
+			break;
+		case Sem_2::PersonMenuCommand::Delete:
+			Delete_Person(head, tail);
+			break;
+		case Sem_2::PersonMenuCommand::Show_All:
+			break;
+		case Sem_2::PersonMenuCommand::Search:
+			break;
+		default:
+			break;
+		}
+		Update_PersonMenu(head, tail);
+	}
+
 	void LR_1()
 	{
 		LR_1_P_1();
 		LR_1_P_2();
-
-		Linked_PersonPointers* head = new Linked_PersonPointers;
-		head->Person = new Person{ {"Иванов", "Иван", true, "Иванович"}, "Город Иванов ул. Иванова д. 3", "+7 (914) 348 34 65"};
-		Linked_PersonPointers* tal = Add_In_List(new Person{ {"Иванов", "Иван1", true, "Иванович"}, "Город Иванов ул. Иванова д. 2", "+7 (924) 412 34 65 "}, head);
-		tal = Add_In_List(new Person{ {"Иванов", "Иван2", true, "Иванович"}, "Город Иванов ул. Иванова д. 3", "+7 (924) 348 23 65 " }, head);
-
-		Print(head);
+		Update_PersonMenu();
 	}
 
 	#pragma endregion
