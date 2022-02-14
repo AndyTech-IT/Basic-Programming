@@ -1465,6 +1465,7 @@ namespace Sem_2
 			Delete_Person(head, tail);
 			break;
 		case Sem_2::PersonMenuCommand::Show_All:
+			Print(head);
 			break;
 		case Sem_2::PersonMenuCommand::Search:
 			break;
