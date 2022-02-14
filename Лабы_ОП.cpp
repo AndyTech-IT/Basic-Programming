@@ -1319,6 +1319,11 @@ namespace Sem_2
 
 	void Print(Linked_PersonPointers* head)
 	{
+		if (head == NULL)
+		{
+			cout << "List is empty!" << endl;
+			return;
+		}
 		Print(head->Person);
 		if (head->Next)
 		{
@@ -1356,6 +1361,7 @@ namespace Sem_2
 		if (head == NULL)
 		{
 			cout << "List is empty!" << endl;
+			return;
 		}
 		
 		Linked_PersonPointers* deleting_person = Get_Linc_On_Index(index, head);
@@ -1366,6 +1372,7 @@ namespace Sem_2
 			Print(deleting_person->Person);
 			cout << "Y/N: ";
 			char c;
+			cin >> c;
 			if (c != 'Y' && c != 'y')
 				return;
 
@@ -1399,6 +1406,7 @@ namespace Sem_2
 		cin >> creating_person->Adress;
 		cout << "Enter phone number: ";
 		cin >> creating_person->Phone_Number;
+		return creating_person;
 	}
 
 	void Create_Person(Linked_PersonPointers* head, Linked_PersonPointers* tail)
@@ -1442,8 +1450,9 @@ namespace Sem_2
 		cout << "1) Create new Person" << endl;
 		cout << "2) Sort Persons list" << endl;
 		cout << "3) Edit existing Person" << endl;
-		cout << "4) Show all Persons" << endl;
-		cout << "5) Search Person by FIO" << endl;
+		cout << "4) Delete person" << endl;
+		cout << "5) Show all Persons" << endl;
+		cout << "6) Search Person by FIO" << endl;
 		cout << "Enter command number: ";
 		cin >> i_c;
 		cout << endl;
@@ -1477,8 +1486,8 @@ namespace Sem_2
 
 	void LR_1()
 	{
-		LR_1_P_1();
-		LR_1_P_2();
+		//LR_1_P_1();
+		//LR_1_P_2();
 		Update_PersonMenu();
 	}
 
