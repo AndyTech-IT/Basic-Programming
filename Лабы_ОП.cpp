@@ -1299,6 +1299,81 @@ namespace Sem_2
 		Person* Person;
 	};
 
+	struct Persons_Tree
+	{
+		Persons_Tree* Left = NULL;
+		Persons_Tree* Right = NULL;
+		Person* Curent;
+	};
+
+	Persons_Tree* Build_Tree(Linked_PersonPointers* item)
+	{
+		Persons_Tree* root = new Persons_Tree();
+		Persons_Tree* branch = root;
+		while (item)
+		{
+			if (branch->Curent == NULL)
+			{
+				branch->Curent = item->Person;
+			}
+			else
+			{
+				string fio1 = branch->Curent->Name.SecondName + branch->Curent->Name.FirstName + branch->Curent->Name.MidleName;
+				string fio2 = item->Person->Name.SecondName + item->Person->Name.FirstName + item->Person->Name.MidleName;
+				if (fio1 > fio2)
+				{
+					if (branch->Left == NULL)
+						branch->Left = new Persons_Tree();
+					branch = branch->Left;
+					continue;
+				}
+				else
+				{
+					if (branch->Right == NULL)
+						branch->Right = new Persons_Tree();
+					branch = branch->Right;
+					continue;
+				}
+			}
+
+			item = item->Next;
+			branch = root;
+		}
+		return root;
+	}
+
+	Linked_PersonPointers* Tree_To_List(Persons_Tree* tree, Linked_PersonPointers* tail = NULL)
+	{
+		if (tree == NULL)
+		{
+			return NULL;
+		}
+
+		if (tree->Left)
+		{
+			tail = Tree_To_List(tree->Left, tail);
+		}
+
+		if (tail)
+		{
+			tail->Next = new Linked_PersonPointers();
+			tail->Next->Previos = tail;
+			tail = tail->Next;
+		}
+		else
+			tail = new Linked_PersonPointers();
+
+		tail->Person = tree->Curent;
+
+		if (tree->Right)
+		{
+			tail = Tree_To_List(tree->Right, tail);
+		}
+
+		return tail;
+
+	}
+
 	enum class PersonMenuCommand
 	{
 		Exit,
@@ -1313,8 +1388,8 @@ namespace Sem_2
 	void Print(Person* p)
 	{
 		cout << "Person: " << p->Name.SecondName << ' ' << p->Name.FirstName << ' ' << (p->Name.Has_MidleName ? p->Name.MidleName : "") << endl;
-		cout << '\t' << p->Adress << endl;
-		cout << '\t' << p->Phone_Number << endl;
+		cout << "- Adress:\t" << p->Adress << endl;
+		cout << "- Phone:\t" << p->Phone_Number << endl;
 	}
 
 	void Print(Linked_PersonPointers* head)
@@ -1332,7 +1407,7 @@ namespace Sem_2
 		}
 	}
 
-	Linked_PersonPointers* Add_In_List(Person* p, Linked_PersonPointers* tal = NULL)
+	Linked_PersonPointers* Add_In_List(Person*& p, Linked_PersonPointers* tal = NULL)
 	{
 		Linked_PersonPointers* next = new Linked_PersonPointers;
 		next->Previos = tal;
@@ -1342,7 +1417,7 @@ namespace Sem_2
 		return next;
 	}
 
-	Linked_PersonPointers* Get_Linc_On_Index(int index, Linked_PersonPointers* head)
+	Linked_PersonPointers* Get_Linc_On_Index(int index, Linked_PersonPointers*& head)
 	{
 		Linked_PersonPointers* curent = head;
 		int i = 0;
@@ -1356,7 +1431,7 @@ namespace Sem_2
 		return curent;
 	}
 
-	void Remove_From_List(int index, Linked_PersonPointers* head)
+	void Remove_From_List(int index, Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
 	{
 		if (head == NULL)
 		{
@@ -1375,9 +1450,26 @@ namespace Sem_2
 			cin >> c;
 			if (c != 'Y' && c != 'y')
 				return;
-
-			deleting_person->Previos->Next = deleting_person->Next;
-			deleting_person->Next->Previos = deleting_person->Previos;
+			if (deleting_person->Next && deleting_person->Previos)
+			{
+				deleting_person->Previos->Next = deleting_person->Next;
+				deleting_person->Next->Previos = deleting_person->Previos;
+			}
+			else if (deleting_person->Next)
+			{
+				deleting_person->Next->Previos = NULL;
+				head = deleting_person->Next;
+			}
+			else if (deleting_person->Previos)
+			{
+				deleting_person->Previos->Next = NULL;
+				tail = deleting_person->Previos;
+			}
+			else
+			{
+				head = NULL;
+				tail = NULL;
+			}
 			delete deleting_person;
 		}
 		else
@@ -1409,29 +1501,28 @@ namespace Sem_2
 		return creating_person;
 	}
 
-	void Create_Person(Linked_PersonPointers* head, Linked_PersonPointers* tail)
+	void Create_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
 	{
 		Person* creating_person = Enter_Person_Data();
 
 		if (head == NULL)
+		{
 			head = Add_In_List(creating_person);
-
-		else if (tail == NULL)
-			tail = Add_In_List(creating_person, head);
-
+			tail = head;
+		}
 		else
 			tail = Add_In_List(creating_person, tail);
 	}
 
-	void Delete_Person(Linked_PersonPointers* head, Linked_PersonPointers* tail)
+	void Delete_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
 	{
 		cout << "Enter deleting person number: ";
 		int index;
 		cin >> index;
-		Remove_From_List(index, head);
+		Remove_From_List(index, head, tail);
 	}
 
-	void Edit_Person(Linked_PersonPointers* head, Linked_PersonPointers* tail)
+	void Edit_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
 	{
 		int i;
 		cout << "Editing person number: ";
@@ -1443,6 +1534,42 @@ namespace Sem_2
 			cout << "Index out of range!" << endl;
 	}
 
+	void Sort(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+	{
+		if (head == NULL)
+		{
+			cout << "List is empty!";
+			return;
+		}
+
+		Persons_Tree* root = Build_Tree(head);
+		tail = Tree_To_List(root);
+
+		Linked_PersonPointers* curent = tail;
+		while (true)
+		{
+			if (curent->Previos == NULL)
+			{
+				head = curent;
+				break;
+			}
+			curent = curent->Previos;
+		}
+	}
+
+	void Search(Linked_PersonPointers* curent)
+	{
+		cout << "Enter Second Name: ";
+		string second_name;
+		cin >> second_name; 
+		while (curent)
+		{
+			if (curent->Person->Name.SecondName.find(second_name) != -1)
+				Print(curent->Person);
+			curent = curent->Next;
+		}
+	}
+
 	void Update_PersonMenu(Linked_PersonPointers* head = NULL, Linked_PersonPointers* tail = NULL)
 	{
 		int i_c;
@@ -1451,7 +1578,7 @@ namespace Sem_2
 		cout << "2) Sort Persons list" << endl;
 		cout << "3) Edit existing Person" << endl;
 		cout << "4) Delete person" << endl;
-		cout << "5) Show all Persons" << endl;
+		cout << "5) Show by FIO" << endl;
 		cout << "6) Search Person by FIO" << endl;
 		cout << "Enter command number: ";
 		cin >> i_c;
@@ -1466,6 +1593,7 @@ namespace Sem_2
 			Create_Person(head, tail);
 			break;
 		case Sem_2::PersonMenuCommand::Sort:
+			Sort(head, tail);
 			break;
 		case Sem_2::PersonMenuCommand::Edit:
 			Edit_Person(head, tail);
@@ -1477,10 +1605,13 @@ namespace Sem_2
 			Print(head);
 			break;
 		case Sem_2::PersonMenuCommand::Search:
+			Search(head);
 			break;
 		default:
+			cout << endl << "Wrong Command!";
 			break;
 		}
+		cout << endl;
 		Update_PersonMenu(head, tail);
 	}
 
