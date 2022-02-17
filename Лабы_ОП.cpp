@@ -1615,11 +1615,76 @@ namespace Sem_2
 		Update_PersonMenu(head, tail);
 	}
 
+	struct Line_OR_Int_Array
+	{
+		static const int arr_size = 10;
+		static const int line_size = 20;
+		int curent_size = arr_size;
+		union {
+			int Numbers[Line_OR_Int_Array::arr_size];
+			char Lines[Line_OR_Int_Array::arr_size][Line_OR_Int_Array::line_size];
+		} Data;
+		bool Is_Line = false;
+	};
+
+	void LR_1_DOP()
+	{
+		Line_OR_Int_Array arr;
+
+		cout << "Enter Data type (S, N): ";
+		char c;
+		cin >> c;
+		if (c == 'N' || c == 'n')
+		{
+			cout << "Enter -1 to finish entering." << endl;
+			arr.Is_Line = false;
+			for (int i = 0; i < Line_OR_Int_Array::arr_size; i++)
+			{
+				cout << "Enter " << i + 1 << " number: ";
+				cin >> arr.Data.Numbers[i];
+				if (arr.Data.Numbers[i] == -1)
+				{
+					arr.curent_size = i;
+					break;
+				}
+			}
+		}
+
+		if (c == 'S' || c == 's')
+		{
+			cout << "Enter Stop to finish entering." << endl;
+			arr.Is_Line = true;
+			for (int i = 0; i < Line_OR_Int_Array::arr_size; i++)
+			{
+				cout << "Enter " << i + 1 << " line: ";
+				cin >> arr.Data.Lines[i];
+				if (!strcmp(arr.Data.Lines[i], "stop") || !strcmp(arr.Data.Lines[i], "Stop"))
+				{
+					arr.curent_size = i;
+					break;
+				}
+			}
+		}
+
+		cout << "Entering finished." << endl;
+
+		if (arr.Is_Line)
+			for (int i = 0; i < arr.curent_size; i++)
+
+				cout << "Line " << i + 1 << " : " << arr.Data.Lines[i] << endl;
+		else
+			for (int i = 0; i < arr.curent_size; i++)
+				cout << "Number " << i + 1 << " : " << arr.Data.Numbers[i] << endl;
+
+	}
+	
+
 	void LR_1()
 	{
 		//LR_1_P_1();
 		//LR_1_P_2();
-		Update_PersonMenu();
+		//Update_PersonMenu();
+		LR_1_DOP();
 	}
 
 	#pragma endregion
