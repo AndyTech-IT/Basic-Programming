@@ -1689,12 +1689,259 @@ namespace Sem_2
 
 	#pragma endregion
 
+	
+	#pragma region LR 2
+
+	struct DemoList
+	{
+		DemoList* Next = NULL;
+		DemoList* Previous = NULL;
+
+		int Data;
+	};
+
+	enum class List_Command
+	{
+		Exit,
+		Next,
+		Back,
+		Add_In_Tail,
+		Edit_Curent
+
+	};
+
+	List_Command Show_Menu()
+	{
+		cout << endl;
+		cout << "0) Exit" << endl;
+		cout << "1) Next" << endl;
+		cout << "2) Back" << endl;
+		cout << "3) Add" << endl;
+		cout << "4) Edit" << endl;
+		int i;
+		cout << "Command number: ";
+		cin >> i;
+		if (i < 0 || i > 4)
+		{
+			cout << "Wrong command number!" << endl;
+			return Show_Menu();
+		}
+		else
+			return (List_Command)i;
+	}
+
+	void Next(DemoList*& curent)
+	{
+		if (curent == NULL)
+		{
+			cout << "Curent is EMPTY!" << endl;
+			return;
+		}
+
+		if (curent->Next)
+			curent = curent->Next;
+		else
+			cout << "Next is missing!" << endl;
+	}
+	void Back(DemoList*& curent)
+	{
+		if (curent == NULL)
+		{
+			cout << "Curent is EMPTY!" << endl;
+			return;
+		}
+
+		if (curent->Previous)
+			curent = curent->Previous;
+		else
+			cout << "Previous is missing!" << endl;
+	}
+
+	void Add_In_Tail(DemoList*& head, DemoList*& tail)
+	{
+		if (tail && head)
+		{
+			tail->Next = new DemoList();
+			tail->Next->Previous = tail;
+			tail = tail->Next;
+		}
+		else
+		{
+			head = new DemoList();
+			tail = head;
+		}
+
+		cout << "Enter new data: ";
+		cin >> tail->Data;
+	}
+	void Edit_Data(DemoList*& curent)
+	{
+		if (curent)
+		{
+			cout << "Enter new data: ";
+			cin >> curent->Data;
+		}
+		else
+		{
+			cout << "Curent is EMPTY!" << endl;
+		}
+	}
+
+	void List_Manager(DemoList* head = NULL, DemoList* tail = NULL, DemoList* curent = NULL)
+	{
+		if (curent == NULL)
+			if (head)
+				curent = head;
+			else
+				cout << "Curent is EMPTY!" << endl;
+
+		if (curent)
+			cout << "Curent data: " << curent->Data << endl;
+
+		List_Command command = Show_Menu();
+		switch (command)
+		{
+		case List_Command::Exit:
+			return;
+		case Sem_2::List_Command::Next:
+			Next(curent);
+			break;
+		case Sem_2::List_Command::Back:
+			Back(curent);
+			break;
+		case Sem_2::List_Command::Add_In_Tail:
+			Add_In_Tail(head, tail);
+			break;
+		case Sem_2::List_Command::Edit_Curent:
+			Edit_Data(curent);
+			break;;
+		default:
+			throw "Enum value out of range!";
+			break;
+		}
+		cout << endl;
+		List_Manager(head, tail, curent);
+	}
+
+	void Get(DemoList*& head)
+	{
+		if (head)
+		{
+			cout << "Data = " << head->Data << endl;
+			DemoList* temp_head = head;
+			if (head->Next)
+				head = head->Next;
+			else
+				head = NULL;
+			delete temp_head;
+		}
+	}
+
+	void Set(DemoList*& head)
+	{
+		if (head)
+		{
+			head->Previous = new DemoList();
+			head->Previous->Next = head;
+			head = head->Previous;
+		}
+		else
+			head = new DemoList();
+
+		cout << "Enter new data: ";
+		cin >> head->Data;
+	}
+
+	void Stack_Manager(DemoList* head = NULL)
+	{
+		cout << "Get or Set data or? Exit& (G/S/E): ";
+		char c;
+		cin >> c;
+		if (c == 'G' || c == 'g')
+			Get(head);
+
+		if (c == 'S' || c == 's')
+			Set(head);
+
+		if (c == 'E' || c == 'e')
+			return;
+		
+		Stack_Manager(head);
+	}
+
+	void Set(DemoList*& head, DemoList*& tail)
+	{
+		if (head)
+		{
+			head->Previous = new DemoList();
+			head->Previous->Next = head;
+			head = head->Previous;
+		}
+		else
+		{
+			head = new DemoList();
+			tail = head;
+		}
+
+		cout << "Enter new data: ";
+		cin >> head->Data;
+	}
+
+	void Get(DemoList*& head, DemoList*& tail)
+	{
+		if (tail)
+		{
+			cout << "Data = " << tail->Data << endl;
+
+			DemoList* temp_tail = tail;
+			if (tail->Previous)
+				tail = tail->Previous;
+			else
+			{
+				tail = NULL;
+				head = NULL;
+			}
+			delete temp_tail;
+		}
+		else
+			cout << "Queue is empty!" << endl;
+	}
+
+	void Queue_Manager(DemoList* head = NULL, DemoList* tail = NULL)
+	{
+		cout << "Get or Set data or? Exit& (G/S/E): ";
+		char c;
+		cin >> c;
+		if (c == 'G' || c == 'g')
+			Get(head, tail);
+
+		if (c == 'S' || c == 's')
+			Set(head, tail);
+
+		if (c == 'E' || c == 'e')
+			return;
+		Queue_Manager(head, tail);
+	}
+
+	void LR_2()
+	{
+		cout << "Queue demo:" << endl;
+		Queue_Manager();
+		cout << "Stack Demo:" << endl;
+		Stack_Manager();
+		cout << "List Demo:" << endl;
+		List_Manager();
+	}
+
+	#pragma endregion
+
 
 
 #pragma endregion
 
 }
 
+#include "test.h";
 
 const auto RusCharset = 1251;
 
@@ -1705,7 +1952,8 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	Sem_2::LR_1();
+	//Sem_2::LR_1();
+	Sem_2::LR_2();
 	cout << endl;
 
 	system("pause");
