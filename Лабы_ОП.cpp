@@ -4,6 +4,8 @@
 #include <string>
 #include <regex>
 #include <math.h>
+#include <stdio.h>
+#include <exception>
 
 using namespace std;
 
@@ -1179,7 +1181,6 @@ namespace Sem_2
 
 	#pragma endregion
 
-
 	namespace LR_1
 	{
 	#pragma region General
@@ -1617,7 +1618,6 @@ namespace Sem_2
 		}
 	}
 
-
 	namespace LR_2
 	{
 		using Person = LR_1::Person;
@@ -1867,6 +1867,7 @@ namespace Sem_2
 		}
 
 	#pragma endregion
+
 
 	#pragma region Individual + Additional
 
@@ -2210,6 +2211,158 @@ namespace Sem_2
 			Individual_Additional();
 		}
 	}
+
+	namespace LR_3
+	{
+		int* Read_Numbers_From_File(const char file_name[], int& size)
+		{
+			int* data = NULL;
+			FILE* file = NULL;
+			fopen_s(&file, file_name, "r");
+			if (file)
+			{
+				__try
+				{
+					fscanf_s(file, "%d", &size);
+					data = new int[size];
+					for (int i = 0; i < size; i++)
+					{
+						fscanf_s(file, "%d", &data[i]);
+					}
+
+				}
+				__finally
+				{
+					fclose(file);
+					delete file;
+				}
+			}
+			return data;
+		}
+
+		void Write_Numbers_In_File(const char file_name[], const int data[], const int size)
+		{
+			FILE* file = NULL;
+			fopen_s(&file, file_name, "w");
+			if (file)
+			{
+				__try
+				{
+					fprintf_s(file, "%d", size);
+					for (int i = 0; i < size; i++)
+					{
+						fprintf_s(file, " %d", data[i]);
+					}
+				}
+				__finally
+				{
+					fclose(file);
+					delete file;
+				}
+			}
+		}
+
+
+		void General_1()
+		{
+			int size = 0;
+			int* numbers = Read_Numbers_From_File("LR_3_General_1_IN.txt", size);
+
+			if (numbers == NULL)
+			{
+				cout << "File is empty!" << endl;
+				return;
+			}
+
+			for (int loop = 0; loop < size; loop++)
+			{
+				for (int i = 0; i < size - loop - 1; i++)
+				{
+					if (numbers[i] > numbers[i + 1])
+					{
+						int temp = numbers[i];
+						numbers[i] = numbers[i + 1];
+						numbers[i + 1] = temp;
+					}
+				}
+			}
+
+			Write_Numbers_In_File("LR_3_General_1_OUT.txt", numbers, size);
+		}
+
+		struct Student
+		{
+			int Index;
+			string SecondName;
+			double Avarage_Mark;
+		};
+
+		Student* Read_Students(const char file_name[], int& count)
+		{
+			FILE* file = NULL;
+			Student* data = NULL;
+			freopen_s(&file, file_name, "r", stdin);
+			if (file)
+			{
+				__try
+				{
+					int count = 0;
+					scanf_s("%d", &count);
+					data = new Student[count];
+					for (int i = 0; i < count; i++)
+					{
+						char buf[256] = "";
+						scanf_s("%d", &data[i].Index); 
+						scanf_s(" %s", &buf, 2);
+						scanf_s("%lf\n", &data[i].Avarage_Mark);
+						data[i].SecondName = buf;
+					}
+				}
+				__finally
+				{
+					fclose(file);
+					freopen_s(&file, "CON", "r", stdin);
+				}
+			}
+			return data;
+		}
+
+		void Print_Table(const Student students[], const int count)
+		{
+			printf_s("+----+---------------------+----+\n");
+			printf_s("| %4s | %20s | %4s |\n", "№", "Second name", "AVG");
+			printf_s("+----+---------------------+----+\n");
+			for (int i = 0; i < count; i++)
+			{
+				printf_s("| %4d | %20s | %4f |\n", students[i].Index, students[i].SecondName.c_str(), students[i].Avarage_Mark);
+			}
+			printf_s("+----+---------------------+----+\n");
+		}
+
+		void General_2()
+		{
+			int count = 0;
+			Student* students = Read_Students("LR_3_General_2_IN.txt", count);
+			if (students == NULL)
+			{
+				cout << "File is empty!" << endl;
+				return;
+			}
+			Print_Table(students, count);
+		}
+
+
+		void All()
+		{
+			//cout << "General 1:" << endl;
+			//General_1();
+
+			cout << "General 2:" << endl;
+			General_2();
+
+
+		}
+	}
 }
 
 
@@ -2225,7 +2378,7 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	Sem_2::LR_2::All();
+	Sem_2::LR_3::All();
 
 	cout << endl;
 
