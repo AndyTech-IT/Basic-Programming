@@ -1179,767 +1179,1040 @@ namespace Sem_2
 
 	#pragma endregion
 
-	#pragma region LR 1
 
-	#pragma region Practice
-
-	struct Point3 
+	namespace LR_1
 	{
-		int x;
-		int y;
-		int z;
-	};
+	#pragma region General
 
-	void Print(Point3 points[], int count)
-	{
-		for (int i = 0; i < count; i++)
+		struct Point3
 		{
-			cout << "Vector " << i << ": (" << points[i].x << ", " << points[i].y << ", " << points[i].z << ");" << endl;
-		}
-	}
+			int x;
+			int y;
+			int z;
+		};
 
-	Point3 Get_Niarest_To_Center(Point3 points[], int count)
-	{
-		double shortest_distance = -1;
-		Point3 nearest_point;
-		int i = 0;
-		do {
-			Point3 point = points[i];
-			double distance = sqrt(pow(point.x, 2) + pow(point.y, 2) + pow(point.z, 2));
-			if (shortest_distance == -1 || shortest_distance > distance)
+		void Print(Point3 points[], int count)
+		{
+			for (int i = 0; i < count; i++)
 			{
-				shortest_distance = distance;
-				nearest_point = point;
+				cout << "Vector " << i << ": (" << points[i].x << ", " << points[i].y << ", " << points[i].z << ");" << endl;
 			}
-			i++;
-		} while (i < count);
-		return nearest_point;
-	}
-	void LR_1_P_1()
-	{
-		Point3 points[6]{ {1, 2, 3}, {1, 2, -2} , {1, 1, 0}, {1, 1, 1}, {1, 0, 0}, {-1, -2, 1} };
-		Print(points, 6);
-		cout << endl;
-		Point3 nearest[] = { Get_Niarest_To_Center(points, 6) };
-		cout << "Nearest is ";
-		Print(nearest, 1);
-		cout << endl;
-	}
+		}
 
-	#define Work_Binary(operation, bin_int, prefix, postfix)	\
-						operation prefix bin_int.b1 postfix;	\
-						operation prefix bin_int.b2 postfix;	\
-						operation prefix bin_int.b3 postfix;	\
-						operation prefix bin_int.b4 postfix;	\
-						operation prefix bin_int.b5 postfix;	\
-						operation prefix bin_int.b6 postfix;	\
-						operation prefix bin_int.b7 postfix; 	\
-						operation prefix bin_int.b8 postfix;	\
-						operation prefix bin_int.b9 postfix;	\
-						operation prefix bin_int.b10 postfix;	\
-						operation prefix bin_int.b11 postfix;	\
-						operation prefix bin_int.b12 postfix;	\
-						operation prefix bin_int.b13 postfix;	\
-						operation prefix bin_int.b14 postfix;	\
-						operation prefix bin_int.b15 postfix;	\
-						operation prefix bin_int.b16 postfix;  
+		Point3 Get_Niarest_To_Center(Point3 points[], int count)
+		{
+			double shortest_distance = -1;
+			Point3 nearest_point;
+			int i = 0;
+			do {
+				Point3 point = points[i];
+				double distance = sqrt(pow(point.x, 2) + pow(point.y, 2) + pow(point.z, 2));
+				if (shortest_distance == -1 || shortest_distance > distance)
+				{
+					shortest_distance = distance;
+					nearest_point = point;
+				}
+				i++;
+			} while (i < count);
+			return nearest_point;
+		}
 
+		void General_1()
+		{
+			Point3 points[6]{ {1, 2, 3}, {1, 2, -2} , {1, 1, 0}, {1, 1, 1}, {1, 0, 0}, {-1, -2, 1} };
+			Print(points, 6);
+			cout << endl;
+			Point3 nearest[] = { Get_Niarest_To_Center(points, 6) };
+			cout << "Nearest is ";
+			Print(nearest, 1);
+			cout << endl;
+		}
 
-	union Int_With_Binary
-	{	
-		struct Bin_Int {
-			unsigned short int b1 : 1;
-			unsigned short int b2 : 1;
-			unsigned short int b3 : 1;
-			unsigned short int b4 : 1;
-			unsigned short int b5 : 1;
-			unsigned short int b6 : 1;
-			unsigned short int b7 : 1;
-			unsigned short int b8 : 1;
-			unsigned short int b9 : 1;
-			unsigned short int b10 : 1;
-			unsigned short int b11 : 1;
-			unsigned short int b12 : 1;
-			unsigned short int b13 : 1;
-			unsigned short int b14 : 1;
-			unsigned short int b15 : 1;
-			unsigned short int b16 : 1;
-		} Binary;
-		int Decemal;
-	};
+		union Int_With_Binary
+		{
+			struct Bin_Int 
+			{
+				unsigned short int b1  : 1;
+				unsigned short int b2  : 1;
+				unsigned short int b3  : 1;
+				unsigned short int b4  : 1;
+				unsigned short int b5  : 1;
+				unsigned short int b6  : 1;
+				unsigned short int b7  : 1;
+				unsigned short int b8  : 1;
+				unsigned short int b9  : 1;
+				unsigned short int b10 : 1;
+				unsigned short int b11 : 1;
+				unsigned short int b12 : 1;
+				unsigned short int b13 : 1;
+				unsigned short int b14 : 1;
+				unsigned short int b15 : 1;
+				unsigned short int b16 : 1;
+			} Binary;
+			int Decemal;
+		};
 
-	void LR_1_P_2()
-	{
-		Int_With_Binary test;
-		cin >> test.Decemal;
-		Work_Binary(cout << ,test.Binary);
-		cout << endl;
-	}
+		void General_2()
+		{
+			Int_With_Binary test;
+			cin >> test.Decemal;
+
+			cout << test.Binary.b16;
+			cout << test.Binary.b15;
+			cout << test.Binary.b14;
+			cout << test.Binary.b13;
+			cout << test.Binary.b12;
+			cout << test.Binary.b11;
+			cout << test.Binary.b10;
+			cout << test.Binary.b9;
+			cout << test.Binary.b8;
+			cout << test.Binary.b7;
+			cout << test.Binary.b6;
+			cout << test.Binary.b5;
+			cout << test.Binary.b4;
+			cout << test.Binary.b3;
+			cout << test.Binary.b2;
+			cout << test.Binary.b1;
+
+			cout << endl;
+		}
 
 	#pragma endregion
 
 
-	struct Person
-	{
-		struct 
+	#pragma region Individual
+
+		const int SIZE = 10;
+		struct Person
 		{
-			string SecondName;
-			string FirstName;
-			bool Has_MidleName = false;
-			string MidleName;
-		} Name;
-		string Adress;
-		string Phone_Number;
-	};
-
-	struct Linked_PersonPointers
-	{
-		Linked_PersonPointers* Next = NULL;
-		Linked_PersonPointers* Previos = NULL;
-		Person* Person;
-	};
-
-	struct Persons_Tree
-	{
-		Persons_Tree* Left = NULL;
-		Persons_Tree* Right = NULL;
-		Person* Curent;
-	};
-
-	Persons_Tree* Build_Tree(Linked_PersonPointers* item)
-	{
-		Persons_Tree* root = new Persons_Tree();
-		Persons_Tree* branch = root;
-		while (item)
-		{
-			if (branch->Curent == NULL)
+			struct
 			{
-				branch->Curent = item->Person;
+				string SecondName;
+				string FirstName;
+				bool Has_MidleName = false;
+				string MidleName;
+			} Name;
+			string Adress;
+			string Phone_Number;
+		};
+
+		string Get_FIO(const Person p)
+		{
+			return p.Name.SecondName + ' ' + p.Name.FirstName + ' ' + (p.Name.Has_MidleName ? p.Name.MidleName : "");
+		}
+
+		void Print(Person p)
+		{
+			cout << "Person: " << Get_FIO(p) << endl;
+			cout << "- Adress:\t" << p.Adress << endl;
+			cout << "- Phone:\t" << p.Phone_Number << endl;
+		}
+
+		Person Enter_Person_Data()
+		{
+			Person creating_person;
+			cout << "Enter second name: ";
+			cin >> creating_person.Name.SecondName;
+			cout << "Enter first name: ";
+			cin >> creating_person.Name.FirstName;
+
+			cout << "Has middle name? (Y/N): ";
+			char c;
+			cin >> c;
+
+			if (c == 'Y' || c == 'y')
+			{
+				cout << "Enter midle name: ";
+				cin >> creating_person.Name.MidleName;
+				creating_person.Name.Has_MidleName = true;
+			}
+
+			cout << "Enter adress: ";
+			cin >> creating_person.Adress;
+			cout << "Enter phone number: ";
+			cin >> creating_person.Phone_Number;
+
+			return creating_person;
+		}
+
+
+		enum class MenuCommand
+		{
+			Exit,
+			Create,
+			Sort,
+			Edit,
+			Delete,
+			Show_All,
+			Search
+		};
+
+		MenuCommand Choose_Command()
+		{
+			cout << "0) Exit" << endl;
+			cout << "1) Create new Person" << endl;
+			cout << "2) Sort Persons list" << endl;
+			cout << "3) Edit existing Person" << endl;
+			cout << "4) Delete Person" << endl;
+			cout << "5) Print all Persons" << endl;
+			cout << "6) Search Person by FIO" << endl;
+
+			int i;
+			cout << "Enter command number: ";
+			cin >> i;
+			cout << endl;
+
+			if (i < 0 || 6 < i)
+			{
+				cout << "Wrong command!" << endl;
+				return Choose_Command();
 			}
 			else
+				return (MenuCommand)i;
+		}
+
+
+		void Create_Person(Person* arr, int& count)
+		{
+			if (count == SIZE)
 			{
-				string fio1 = branch->Curent->Name.SecondName + branch->Curent->Name.FirstName + branch->Curent->Name.MidleName;
-				string fio2 = item->Person->Name.SecondName + item->Person->Name.FirstName + item->Person->Name.MidleName;
-				if (fio1 > fio2)
-				{
-					if (branch->Left == NULL)
-						branch->Left = new Persons_Tree();
-					branch = branch->Left;
-					continue;
-				}
-				else
-				{
-					if (branch->Right == NULL)
-						branch->Right = new Persons_Tree();
-					branch = branch->Right;
-					continue;
-				}
+				cout << "Array is full!" << endl;
+				return;
 			}
 
-			item = item->Next;
-			branch = root;
-		}
-		return root;
-	}
-
-	Linked_PersonPointers* Tree_To_List(Persons_Tree* tree, Linked_PersonPointers* tail = NULL)
-	{
-		if (tree == NULL)
-		{
-			return NULL;
+			Person p = Enter_Person_Data();
+			arr[count++] = p;
 		}
 
-		if (tree->Left)
+
+		void Sort(Person* arr, const int count)
 		{
-			tail = Tree_To_List(tree->Left, tail);
+			for (int loop = 0; loop < count; loop++)
+			{
+				for (int i = 0; i < count - loop - 1; i++)
+				{
+					string fio1 = Get_FIO(arr[i]);
+					string fio2 = Get_FIO(arr[i+1]);
+					if (fio1 > fio2)
+					{
+						Person temp = arr[i];
+						arr[i] = arr[i + 1];
+						arr[i + 1] = temp;
+					}
+				}
+			}
 		}
 
-		if (tail)
+
+		void Edit(Person* arr, const int count)
 		{
-			tail->Next = new Linked_PersonPointers();
-			tail->Next->Previos = tail;
-			tail = tail->Next;
+			cout << "Enter Person number: ";
+			int i;
+			cin >> i;
+			if (i < 0 || count < i)
+			{
+				cout << "Index out of range!" << endl;
+				return;
+			}
+
+			arr[i] = Enter_Person_Data();
 		}
-		else
-			tail = new Linked_PersonPointers();
 
-		tail->Person = tree->Curent;
 
-		if (tree->Right)
+		void Delete(Person* arr, int& count)
 		{
-			tail = Tree_To_List(tree->Right, tail);
-		}
+			cout << "Enter Person number: ";
+			int index;
+			cin >> index;
+			if (index < 0 || count < index)
+			{
+				cout << "Index out of range!" << endl;
+				return;
+			}
 
-		return tail;
-
-	}
-
-	enum class PersonMenuCommand
-	{
-		Exit,
-		Create,
-		Sort,
-		Edit,
-		Delete,
-		Show_All,
-		Search
-	};
-
-	void Print(Person* p)
-	{
-		cout << "Person: " << p->Name.SecondName << ' ' << p->Name.FirstName << ' ' << (p->Name.Has_MidleName ? p->Name.MidleName : "") << endl;
-		cout << "- Adress:\t" << p->Adress << endl;
-		cout << "- Phone:\t" << p->Phone_Number << endl;
-	}
-
-	void Print(Linked_PersonPointers* head)
-	{
-		if (head == NULL)
-		{
-			cout << "List is empty!" << endl;
-			return;
-		}
-		Print(head->Person);
-		if (head->Next)
-		{
-			cout << endl;
-			Print(head->Next);
-		}
-	}
-
-	Linked_PersonPointers* Add_In_List(Person*& p, Linked_PersonPointers* tal = NULL)
-	{
-		Linked_PersonPointers* next = new Linked_PersonPointers;
-		next->Previos = tal;
-		next->Person = p;
-		if (tal != NULL)
-			tal->Next = next;
-		return next;
-	}
-
-	Linked_PersonPointers* Get_Linc_On_Index(int index, Linked_PersonPointers*& head)
-	{
-		Linked_PersonPointers* curent = head;
-		int i = 0;
-		while (curent != NULL)
-		{
-			if (i == index)
-				break;
-			i++;
-			curent = curent->Next;
-		}
-		return curent;
-	}
-
-	void Remove_From_List(int index, Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
-	{
-		if (head == NULL)
-		{
-			cout << "List is empty!" << endl;
-			return;
-		}
-		
-		Linked_PersonPointers* deleting_person = Get_Linc_On_Index(index, head);
-
-		if (deleting_person)
-		{
-			cout << "Do you want to remove: " << endl;
-			Print(deleting_person->Person);
+			cout << "Delete person:" << endl;
+			Print(arr[index]);
 			cout << "Y/N: ";
 			char c;
 			cin >> c;
-			if (c != 'Y' && c != 'y')
+
+			if (c != 'y' && c != 'Y')
+			{
+				cout << "Canceling.." << endl;
 				return;
-			if (deleting_person->Next && deleting_person->Previos)
-			{
-				deleting_person->Previos->Next = deleting_person->Next;
-				deleting_person->Next->Previos = deleting_person->Previos;
 			}
-			else if (deleting_person->Next)
+
+			count--;
+
+			for (int i = index; i < count; i++)
 			{
-				deleting_person->Next->Previos = NULL;
-				head = deleting_person->Next;
+				arr[i] = arr[i + 1];
 			}
-			else if (deleting_person->Previos)
+
+			cout << "Deleted" << endl;
+		}
+
+
+		void Print_All(const Person* arr, const int count)
+		{
+			if (count == 0)
 			{
-				deleting_person->Previos->Next = NULL;
-				tail = deleting_person->Previos;
+				cout << "Array is empty!" << endl;
+				return;
 			}
-			else
+
+			cout << "Persons in array:" << endl;
+			for (int i = 0; i < count; i++)
 			{
-				head = NULL;
-				tail = NULL;
+				Print(arr[i]);
 			}
-			delete deleting_person;
-		}
-		else
-		{
-			cout << "Index out of range!" << endl;
-		}
-	}
-
-	Person* Enter_Person_Data()
-	{
-		Person* creating_person = new Person();
-		cout << "Enter second name: ";
-		cin >> creating_person->Name.SecondName;
-		cout << "Enter first name: ";
-		cin >> creating_person->Name.FirstName;
-		cout << "Has middle name? (Y/N): ";
-		char c;
-		cin >> c;
-		if (c == 'Y' || c == 'y')
-		{
-			cout << "Enter midle name: ";
-			cin >> creating_person->Name.MidleName;
-			creating_person->Name.Has_MidleName = true;
-		}
-		cout << "Enter adress: ";
-		cin >> creating_person->Adress;
-		cout << "Enter phone number: ";
-		cin >> creating_person->Phone_Number;
-		return creating_person;
-	}
-
-	void Create_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
-	{
-		Person* creating_person = Enter_Person_Data();
-
-		if (head == NULL)
-		{
-			head = Add_In_List(creating_person);
-			tail = head;
-		}
-		else
-			tail = Add_In_List(creating_person, tail);
-	}
-
-	void Delete_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
-	{
-		cout << "Enter deleting person number: ";
-		int index;
-		cin >> index;
-		Remove_From_List(index, head, tail);
-	}
-
-	void Edit_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
-	{
-		int i;
-		cout << "Editing person number: ";
-		cin >> i;
-		Linked_PersonPointers* editing_person = Get_Linc_On_Index(i, head);
-		if (editing_person)
-			editing_person->Person = Enter_Person_Data();
-		else
-			cout << "Index out of range!" << endl;
-	}
-
-	void Sort(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
-	{
-		if (head == NULL)
-		{
-			cout << "List is empty!";
-			return;
 		}
 
-		Persons_Tree* root = Build_Tree(head);
-		tail = Tree_To_List(root);
 
-		Linked_PersonPointers* curent = tail;
-		while (true)
+		void Search(const Person* arr, const int count)
 		{
-			if (curent->Previos == NULL)
+			cout << "Enter part of FIO: ";
+			char finding[255];
+			cin.ignore();
+			cin.getline(finding, 254);
+
+			for (int i = 0; i < count; i++)
 			{
-				head = curent;
-				break;
+				string fio = Get_FIO(arr[i]);
+				if (fio.find(finding) != -1)
+					Print(arr[i]);
 			}
-			curent = curent->Previos;
 		}
-	}
 
-	void Search(Linked_PersonPointers* curent)
-	{
-		cout << "Enter Second Name: ";
-		string second_name;
-		cin >> second_name; 
-		while (curent)
+
+		void Loop()
 		{
-			if (curent->Person->Name.SecondName.find(second_name) != -1)
-				Print(curent->Person);
-			curent = curent->Next;
-		}
-	}
+			MenuCommand c;
+			Person arr[SIZE];
+			int count = 0;
 
-	void Update_PersonMenu(Linked_PersonPointers* head = NULL, Linked_PersonPointers* tail = NULL)
-	{
-		int i_c;
-		cout << "0) Close programm" << endl;
-		cout << "1) Create new Person" << endl;
-		cout << "2) Sort Persons list" << endl;
-		cout << "3) Edit existing Person" << endl;
-		cout << "4) Delete person" << endl;
-		cout << "5) Show by FIO" << endl;
-		cout << "6) Search Person by FIO" << endl;
-		cout << "Enter command number: ";
-		cin >> i_c;
-		cout << endl;
-
-		switch ((PersonMenuCommand)i_c)
-		{
-		case Sem_2::PersonMenuCommand::Exit:
-			return;
-
-		case Sem_2::PersonMenuCommand::Create:
-			Create_Person(head, tail);
-			break;
-		case Sem_2::PersonMenuCommand::Sort:
-			Sort(head, tail);
-			break;
-		case Sem_2::PersonMenuCommand::Edit:
-			Edit_Person(head, tail);
-			break;
-		case Sem_2::PersonMenuCommand::Delete:
-			Delete_Person(head, tail);
-			break;
-		case Sem_2::PersonMenuCommand::Show_All:
-			Print(head);
-			break;
-		case Sem_2::PersonMenuCommand::Search:
-			Search(head);
-			break;
-		default:
-			cout << endl << "Wrong Command!";
-			break;
-		}
-		cout << endl;
-		Update_PersonMenu(head, tail);
-	}
-
-	struct Line_OR_Int_Array
-	{
-		static const int arr_size = 10;
-		static const int line_size = 20;
-		int curent_size = arr_size;
-		union {
-			int Numbers[Line_OR_Int_Array::arr_size];
-			char Lines[Line_OR_Int_Array::arr_size][Line_OR_Int_Array::line_size];
-		} Data;
-		bool Is_Line = false;
-	};
-
-	void LR_1_DOP()
-	{
-		Line_OR_Int_Array arr;
-
-		cout << "Enter Data type (S, N): ";
-		char c;
-		cin >> c;
-		if (c == 'N' || c == 'n')
-		{
-			cout << "Enter -1 to finish entering." << endl;
-			arr.Is_Line = false;
-			for (int i = 0; i < Line_OR_Int_Array::arr_size; i++)
+			while (true)
 			{
-				cout << "Enter " << i + 1 << " number: ";
-				cin >> arr.Data.Numbers[i];
-				if (arr.Data.Numbers[i] == -1)
+				c = Choose_Command();
+				switch (c)
 				{
-					arr.curent_size = i;
+				case MenuCommand::Create:
+					Create_Person(arr, count);
 					break;
-				}
-			}
-		}
-
-		if (c == 'S' || c == 's')
-		{
-			cout << "Enter Stop to finish entering." << endl;
-			arr.Is_Line = true;
-			for (int i = 0; i < Line_OR_Int_Array::arr_size; i++)
-			{
-				cout << "Enter " << i + 1 << " line: ";
-				cin >> arr.Data.Lines[i];
-				if (!strcmp(arr.Data.Lines[i], "stop") || !strcmp(arr.Data.Lines[i], "Stop"))
-				{
-					arr.curent_size = i;
+				case MenuCommand::Sort:
+					Sort(arr, count);
+					Print_All(arr, count);
 					break;
+				case MenuCommand::Edit:
+					Edit(arr, count);
+					break;
+				case MenuCommand::Delete:
+					Delete(arr, count);
+					break;
+				case MenuCommand::Show_All:
+					Print_All(arr, count);
+					break;
+				case MenuCommand::Search:
+					Search(arr, count);
+					break;
+
+				case MenuCommand::Exit:
+					return;
+				default:
+					throw "Wrong command!";
 				}
+
+				cout << endl;
 			}
 		}
 
-		cout << "Entering finished." << endl;
-
-		if (arr.Is_Line)
-			for (int i = 0; i < arr.curent_size; i++)
-
-				cout << "Line " << i + 1 << " : " << arr.Data.Lines[i] << endl;
-		else
-			for (int i = 0; i < arr.curent_size; i++)
-				cout << "Number " << i + 1 << " : " << arr.Data.Numbers[i] << endl;
-
-	}
-	
-
-	void LR_1()
-	{
-		//LR_1_P_1();
-		//LR_1_P_2();
-		//Update_PersonMenu();
-		LR_1_DOP();
-	}
-
-	#pragma endregion
-
-	
-	#pragma region LR 2
-
-	struct DemoList
-	{
-		DemoList* Next = NULL;
-		DemoList* Previous = NULL;
-
-		int Data;
-	};
-
-	enum class List_Command
-	{
-		Exit,
-		Next,
-		Back,
-		Add_In_Tail,
-		Edit_Curent
-
-	};
-
-	List_Command Show_Menu()
-	{
-		cout << endl;
-		cout << "0) Exit" << endl;
-		cout << "1) Next" << endl;
-		cout << "2) Back" << endl;
-		cout << "3) Add" << endl;
-		cout << "4) Edit" << endl;
-		int i;
-		cout << "Command number: ";
-		cin >> i;
-		if (i < 0 || i > 4)
+		void Individual()
 		{
-			cout << "Wrong command number!" << endl;
-			return Show_Menu();
+			Loop();
 		}
-		else
-			return (List_Command)i;
-	}
-
-	void Next(DemoList*& curent)
-	{
-		if (curent == NULL)
-		{
-			cout << "Curent is EMPTY!" << endl;
-			return;
-		}
-
-		if (curent->Next)
-			curent = curent->Next;
-		else
-			cout << "Next is missing!" << endl;
-	}
-	void Back(DemoList*& curent)
-	{
-		if (curent == NULL)
-		{
-			cout << "Curent is EMPTY!" << endl;
-			return;
-		}
-
-		if (curent->Previous)
-			curent = curent->Previous;
-		else
-			cout << "Previous is missing!" << endl;
-	}
-
-	void Add_In_Tail(DemoList*& head, DemoList*& tail)
-	{
-		if (tail && head)
-		{
-			tail->Next = new DemoList();
-			tail->Next->Previous = tail;
-			tail = tail->Next;
-		}
-		else
-		{
-			head = new DemoList();
-			tail = head;
-		}
-
-		cout << "Enter new data: ";
-		cin >> tail->Data;
-	}
-	void Edit_Data(DemoList*& curent)
-	{
-		if (curent)
-		{
-			cout << "Enter new data: ";
-			cin >> curent->Data;
-		}
-		else
-		{
-			cout << "Curent is EMPTY!" << endl;
-		}
-	}
-
-	void List_Manager(DemoList* head = NULL, DemoList* tail = NULL, DemoList* curent = NULL)
-	{
-		if (curent == NULL)
-			if (head)
-				curent = head;
-			else
-				cout << "Curent is EMPTY!" << endl;
-
-		if (curent)
-			cout << "Curent data: " << curent->Data << endl;
-
-		List_Command command = Show_Menu();
-		switch (command)
-		{
-		case List_Command::Exit:
-			return;
-		case Sem_2::List_Command::Next:
-			Next(curent);
-			break;
-		case Sem_2::List_Command::Back:
-			Back(curent);
-			break;
-		case Sem_2::List_Command::Add_In_Tail:
-			Add_In_Tail(head, tail);
-			break;
-		case Sem_2::List_Command::Edit_Curent:
-			Edit_Data(curent);
-			break;;
-		default:
-			throw "Enum value out of range!";
-			break;
-		}
-		cout << endl;
-		List_Manager(head, tail, curent);
-	}
-
-	void Get(DemoList*& head)
-	{
-		if (head)
-		{
-			cout << "Data = " << head->Data << endl;
-			DemoList* temp_head = head;
-			if (head->Next)
-				head = head->Next;
-			else
-				head = NULL;
-			delete temp_head;
-		}
-	}
-
-	void Set(DemoList*& head)
-	{
-		if (head)
-		{
-			head->Previous = new DemoList();
-			head->Previous->Next = head;
-			head = head->Previous;
-		}
-		else
-			head = new DemoList();
-
-		cout << "Enter new data: ";
-		cin >> head->Data;
-	}
-
-	void Stack_Manager(DemoList* head = NULL)
-	{
-		cout << "Get or Set data or? Exit& (G/S/E): ";
-		char c;
-		cin >> c;
-		if (c == 'G' || c == 'g')
-			Get(head);
-
-		if (c == 'S' || c == 's')
-			Set(head);
-
-		if (c == 'E' || c == 'e')
-			return;
-		
-		Stack_Manager(head);
-	}
-
-	void Set(DemoList*& head, DemoList*& tail)
-	{
-		if (head)
-		{
-			head->Previous = new DemoList();
-			head->Previous->Next = head;
-			head = head->Previous;
-		}
-		else
-		{
-			head = new DemoList();
-			tail = head;
-		}
-
-		cout << "Enter new data: ";
-		cin >> head->Data;
-	}
-
-	void Get(DemoList*& head, DemoList*& tail)
-	{
-		if (tail)
-		{
-			cout << "Data = " << tail->Data << endl;
-
-			DemoList* temp_tail = tail;
-			if (tail->Previous)
-				tail = tail->Previous;
-			else
-			{
-				tail = NULL;
-				head = NULL;
-			}
-			delete temp_tail;
-		}
-		else
-			cout << "Queue is empty!" << endl;
-	}
-
-	void Queue_Manager(DemoList* head = NULL, DemoList* tail = NULL)
-	{
-		cout << "Get or Set data or? Exit& (G/S/E): ";
-		char c;
-		cin >> c;
-		if (c == 'G' || c == 'g')
-			Get(head, tail);
-
-		if (c == 'S' || c == 's')
-			Set(head, tail);
-
-		if (c == 'E' || c == 'e')
-			return;
-		Queue_Manager(head, tail);
-	}
-
-	void LR_2()
-	{
-		cout << "Queue demo:" << endl;
-		Queue_Manager();
-		cout << "Stack Demo:" << endl;
-		Stack_Manager();
-		cout << "List Demo:" << endl;
-		List_Manager();
-	}
 
 	#pragma endregion
 
 
+	#pragma region Additional
+
+		struct Line_OR_Int_Array
+		{
+			static const int arr_size = 10;
+			static const int line_size = 20;
+			int curent_size = arr_size;
+			union {
+				int Numbers[Line_OR_Int_Array::arr_size];
+				char Lines[Line_OR_Int_Array::arr_size][Line_OR_Int_Array::line_size];
+			} Data;
+			bool Is_Line = false;
+		};
+
+		void Additional()
+		{
+			Line_OR_Int_Array arr;
+
+			cout << "Enter Data type (S, N): ";
+			char c;
+			cin >> c;
+			if (c == 'N' || c == 'n')
+			{
+				cout << "Enter -1 to finish entering." << endl;
+				arr.Is_Line = false;
+				for (int i = 0; i < Line_OR_Int_Array::arr_size; i++)
+				{
+					cout << "Enter " << i + 1 << " number: ";
+					cin >> arr.Data.Numbers[i];
+					if (arr.Data.Numbers[i] == -1)
+					{
+						arr.curent_size = i;
+						break;
+					}
+				}
+			}
+
+			if (c == 'S' || c == 's')
+			{
+				cout << "Enter Stop to finish entering." << endl;
+				arr.Is_Line = true;
+				for (int i = 0; i < Line_OR_Int_Array::arr_size; i++)
+				{
+					cout << "Enter " << i + 1 << " line: ";
+					cin >> arr.Data.Lines[i];
+					if (!strcmp(arr.Data.Lines[i], "stop") || !strcmp(arr.Data.Lines[i], "Stop"))
+					{
+						arr.curent_size = i;
+						break;
+					}
+				}
+			}
+
+			cout << "Entering finished." << endl;
+
+			if (arr.Is_Line)
+				for (int i = 0; i < arr.curent_size; i++)
+
+					cout << "Line " << i + 1 << " : " << arr.Data.Lines[i] << endl;
+			else
+				for (int i = 0; i < arr.curent_size; i++)
+					cout << "Number " << i + 1 << " : " << arr.Data.Numbers[i] << endl;
+		}
 
 #pragma endregion
 
+
+		void All()
+		{
+			cout << "General 1:" << endl;
+			General_1();
+
+			cout << endl << "General 2:" << endl;
+			General_2();
+
+			cout << endl << "Individual:" << endl;
+			Individual();
+
+			cout << endl << "Additional:" << endl;
+			Additional();
+		}
+	}
+
+
+	namespace LR_2
+	{
+		using Person = LR_1::Person;
+		using MenuCommand = LR_1::MenuCommand;
+
+
+	#pragma region General
+
+		struct DemoList
+		{
+			DemoList* Next = NULL;
+			DemoList* Previous = NULL;
+
+			int Data;
+		};
+
+		enum class List_Command
+		{
+			Exit,
+			Next,
+			Back,
+			Add_In_Tail,
+			Edit_Curent
+
+		};
+
+		List_Command Show_Menu()
+		{
+			cout << endl;
+			cout << "0) Exit" << endl;
+			cout << "1) Next" << endl;
+			cout << "2) Back" << endl;
+			cout << "3) Add" << endl;
+			cout << "4) Edit" << endl;
+			int i;
+			cout << "Command number: ";
+			cin >> i;
+			if (i < 0 || i > 4)
+			{
+				cout << "Wrong command number!" << endl;
+				return Show_Menu();
+			}
+			else
+				return (List_Command)i;
+		}
+
+		void Next(DemoList*& curent)
+		{
+			if (curent == NULL)
+			{
+				cout << "Curent is EMPTY!" << endl;
+				return;
+			}
+
+			if (curent->Next)
+				curent = curent->Next;
+			else
+				cout << "Next is missing!" << endl;
+		}
+		void Back(DemoList*& curent)
+		{
+			if (curent == NULL)
+			{
+				cout << "Curent is EMPTY!" << endl;
+				return;
+			}
+
+			if (curent->Previous)
+				curent = curent->Previous;
+			else
+				cout << "Previous is missing!" << endl;
+		}
+
+		void Add_In_Tail(DemoList*& head, DemoList*& tail)
+		{
+			if (tail && head)
+			{
+				tail->Next = new DemoList();
+				tail->Next->Previous = tail;
+				tail = tail->Next;
+			}
+			else
+			{
+				head = new DemoList();
+				tail = head;
+			}
+
+			cout << "Enter new data: ";
+			cin >> tail->Data;
+		}
+		void Edit_Data(DemoList*& curent)
+		{
+			if (curent)
+			{
+				cout << "Enter new data: ";
+				cin >> curent->Data;
+			}
+			else
+			{
+				cout << "Curent is EMPTY!" << endl;
+			}
+		}
+
+		void List_Manager(DemoList* head = NULL, DemoList* tail = NULL, DemoList* curent = NULL)
+		{
+			if (curent == NULL)
+				if (head)
+					curent = head;
+				else
+					cout << "Curent is EMPTY!" << endl;
+
+			if (curent)
+				cout << "Curent data: " << curent->Data << endl;
+
+			List_Command command = Show_Menu();
+			switch (command)
+			{
+			case List_Command::Exit:
+				return;
+			case List_Command::Next:
+				Next(curent);
+				break;
+			case List_Command::Back:
+				Back(curent);
+				break;
+			case List_Command::Add_In_Tail:
+				Add_In_Tail(head, tail);
+				break;
+			case List_Command::Edit_Curent:
+				Edit_Data(curent);
+				break;;
+			default:
+				throw "Enum value out of range!";
+				break;
+			}
+			cout << endl;
+			List_Manager(head, tail, curent);
+		}
+
+		void Get(DemoList*& head)
+		{
+			if (head)
+			{
+				cout << "Data = " << head->Data << endl;
+				DemoList* temp_head = head;
+				if (head->Next)
+					head = head->Next;
+				else
+					head = NULL;
+				delete temp_head;
+			}
+		}
+
+		void Set(DemoList*& head)
+		{
+			if (head)
+			{
+				head->Previous = new DemoList();
+				head->Previous->Next = head;
+				head = head->Previous;
+			}
+			else
+				head = new DemoList();
+
+			cout << "Enter new data: ";
+			cin >> head->Data;
+		}
+
+		void Stack_Manager(DemoList* head = NULL)
+		{
+			cout << "Get or Set data or Exit? (G/S/E): ";
+			char c;
+			cin >> c;
+			if (c == 'G' || c == 'g')
+				Get(head);
+
+			if (c == 'S' || c == 's')
+				Set(head);
+
+			if (c == 'E' || c == 'e')
+				return;
+
+			Stack_Manager(head);
+		}
+
+		void Set(DemoList*& head, DemoList*& tail)
+		{
+			if (head)
+			{
+				head->Previous = new DemoList();
+				head->Previous->Next = head;
+				head = head->Previous;
+			}
+			else
+			{
+				head = new DemoList();
+				tail = head;
+			}
+
+			cout << "Enter new data: ";
+			cin >> head->Data;
+		}
+
+		void Get(DemoList*& head, DemoList*& tail)
+		{
+			if (tail)
+			{
+				cout << "Data = " << tail->Data << endl;
+
+				DemoList* temp_tail = tail;
+				if (tail->Previous)
+					tail = tail->Previous;
+				else
+				{
+					tail = NULL;
+					head = NULL;
+				}
+				delete temp_tail;
+			}
+			else
+				cout << "Queue is empty!" << endl;
+		}
+
+		void Queue_Manager(DemoList* head = NULL, DemoList* tail = NULL)
+		{
+			cout << "Get or Set data or Exit? (G/S/E): ";
+			char c;
+			cin >> c;
+			if (c == 'G' || c == 'g')
+				Get(head, tail);
+
+			if (c == 'S' || c == 's')
+				Set(head, tail);
+
+			if (c == 'E' || c == 'e')
+				return;
+			Queue_Manager(head, tail);
+		}
+
+		void General_1()
+		{
+			cout << "Queue:" << endl;
+			Queue_Manager();
+
+			cout << endl << "Stack:" << endl;
+			Stack_Manager();
+		}
+
+	#pragma endregion
+
+	#pragma region Individual + Additional
+
+		struct Linked_PersonPointers
+		{
+			Linked_PersonPointers* Next = NULL;
+			Linked_PersonPointers* Previos = NULL;
+			Person* Person;
+		};
+
+		struct Persons_Tree
+		{
+			Persons_Tree* Left = NULL;
+			Persons_Tree* Right = NULL;
+			Person* Curent;
+		};
+
+		Persons_Tree* Build_Tree(Linked_PersonPointers* item)
+		{
+			Persons_Tree* root = new Persons_Tree();
+			Persons_Tree* branch = root;
+			while (item)
+			{
+				if (branch->Curent == NULL)
+				{
+					branch->Curent = item->Person;
+				}
+				else
+				{
+					string fio1 = branch->Curent->Name.SecondName + branch->Curent->Name.FirstName + branch->Curent->Name.MidleName;
+					string fio2 = item->Person->Name.SecondName + item->Person->Name.FirstName + item->Person->Name.MidleName;
+					if (fio1 > fio2)
+					{
+						if (branch->Left == NULL)
+							branch->Left = new Persons_Tree();
+						branch = branch->Left;
+						continue;
+					}
+					else
+					{
+						if (branch->Right == NULL)
+							branch->Right = new Persons_Tree();
+						branch = branch->Right;
+						continue;
+					}
+				}
+
+				item = item->Next;
+				branch = root;
+			}
+			return root;
+		}
+
+		Linked_PersonPointers* Tree_To_List(Persons_Tree* tree, Linked_PersonPointers* tail = NULL)
+		{
+			if (tree == NULL)
+			{
+				return NULL;
+			}
+
+			if (tree->Left)
+			{
+				tail = Tree_To_List(tree->Left, tail);
+			}
+
+			if (tail)
+			{
+				tail->Next = new Linked_PersonPointers();
+				tail->Next->Previos = tail;
+				tail = tail->Next;
+			}
+			else
+				tail = new Linked_PersonPointers();
+
+			tail->Person = tree->Curent;
+
+			if (tree->Right)
+			{
+				tail = Tree_To_List(tree->Right, tail);
+			}
+
+			return tail;
+
+		}
+
+		enum class PersonMenuCommand
+		{
+			Exit,
+			Create,
+			Sort,
+			Edit,
+			Delete,
+			Show_All,
+			Search
+		};
+
+		void Print(Person* p)
+		{
+			cout << "Person: " << LR_1::Get_FIO(*p) << endl;
+			cout << "- Adress:\t" << p->Adress << endl;
+			cout << "- Phone:\t" << p->Phone_Number << endl;
+		}
+
+		void Print(Linked_PersonPointers* head)
+		{
+			if (head == NULL)
+			{
+				cout << "List is empty!" << endl;
+				return;
+			}
+			Print(head->Person);
+			if (head->Next)
+			{
+				cout << endl;
+				Print(head->Next);
+			}
+		}
+
+		Linked_PersonPointers* Add_In_List(Person*& p, Linked_PersonPointers* tal = NULL)
+		{
+			Linked_PersonPointers* next = new Linked_PersonPointers;
+			next->Previos = tal;
+			next->Person = p;
+			if (tal != NULL)
+				tal->Next = next;
+			return next;
+		}
+
+		Linked_PersonPointers* Get_Linc_On_Index(int index, Linked_PersonPointers*& head)
+		{
+			Linked_PersonPointers* curent = head;
+			int i = 0;
+			while (curent != NULL)
+			{
+				if (i == index)
+					break;
+				i++;
+				curent = curent->Next;
+			}
+			return curent;
+		}
+
+		void Remove_From_List(int index, Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+		{
+			if (head == NULL)
+			{
+				cout << "List is empty!" << endl;
+				return;
+			}
+
+			Linked_PersonPointers* deleting_person = Get_Linc_On_Index(index, head);
+
+			if (deleting_person)
+			{
+				cout << "Do you want to remove: " << endl;
+				Print(deleting_person->Person);
+				cout << "Y/N: ";
+				char c;
+				cin >> c;
+				if (c != 'Y' && c != 'y')
+					return;
+				if (deleting_person->Next && deleting_person->Previos)
+				{
+					deleting_person->Previos->Next = deleting_person->Next;
+					deleting_person->Next->Previos = deleting_person->Previos;
+				}
+				else if (deleting_person->Next)
+				{
+					deleting_person->Next->Previos = NULL;
+					head = deleting_person->Next;
+				}
+				else if (deleting_person->Previos)
+				{
+					deleting_person->Previos->Next = NULL;
+					tail = deleting_person->Previos;
+				}
+				else
+				{
+					head = NULL;
+					tail = NULL;
+				}
+				delete deleting_person;
+			}
+			else
+			{
+				cout << "Index out of range!" << endl;
+			}
+		}
+
+		Person* Enter_Person_Data()
+		{
+			Person* creating_person = new Person();
+			cout << "Enter second name: ";
+			cin >> creating_person->Name.SecondName;
+			cout << "Enter first name: ";
+			cin >> creating_person->Name.FirstName;
+			cout << "Has middle name? (Y/N): ";
+			char c;
+			cin >> c;
+			if (c == 'Y' || c == 'y')
+			{
+				cout << "Enter midle name: ";
+				cin >> creating_person->Name.MidleName;
+				creating_person->Name.Has_MidleName = true;
+			}
+			cout << "Enter adress: ";
+			cin >> creating_person->Adress;
+			cout << "Enter phone number: ";
+			cin >> creating_person->Phone_Number;
+			return creating_person;
+		}
+
+		void Create_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+		{
+			Person* creating_person = Enter_Person_Data();
+
+			if (head == NULL)
+			{
+				head = Add_In_List(creating_person);
+				tail = head;
+			}
+			else
+				tail = Add_In_List(creating_person, tail);
+		}
+
+		void Delete_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+		{
+			cout << "Enter deleting person number: ";
+			int index;
+			cin >> index;
+			Remove_From_List(index, head, tail);
+			cout << "Deleted!" << endl;
+		}
+
+		void Edit_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+		{
+			int i;
+			cout << "Editing person number: ";
+			cin >> i;
+			Linked_PersonPointers* editing_person = Get_Linc_On_Index(i, head);
+			if (editing_person)
+				editing_person->Person = Enter_Person_Data();
+			else
+				cout << "Index out of range!" << endl;
+		}
+
+		void Sort(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+		{
+			if (head == NULL)
+			{
+				cout << "List is empty!";
+				return;
+			}
+
+			Persons_Tree* root = Build_Tree(head);
+			tail = Tree_To_List(root);
+
+			Linked_PersonPointers* curent = tail;
+			while (true)
+			{
+				if (curent->Previos == NULL)
+				{
+					head = curent;
+					break;
+				}
+				curent = curent->Previos;
+			}
+		}
+
+		void Search(Linked_PersonPointers* curent)
+		{
+			cout << "Enter FIO patern: ";
+			char find[255];
+			cin.ignore();
+			cin.getline(find, 254);
+			bool is_finded = false;
+			while (curent)
+			{
+				string fio = LR_1::Get_FIO(*curent->Person);
+				if (fio.find(find) != -1)
+				{
+					Print(curent->Person);
+					is_finded = true;
+				}
+				curent = curent->Next;
+			}
+			if (is_finded == false)
+				cout << "Nothing!" << endl;
+		}
+
+		void Update_PersonMenu(Linked_PersonPointers* head = NULL, Linked_PersonPointers* tail = NULL)
+		{
+			switch (LR_1::Choose_Command())
+			{
+			case MenuCommand::Create:
+				Create_Person(head, tail);
+				break;
+			case MenuCommand::Sort:
+				Sort(head, tail);
+				Print(head);
+				break;
+			case MenuCommand::Edit:
+				Edit_Person(head, tail);
+				break;
+			case MenuCommand::Delete:
+				Delete_Person(head, tail);
+				break;
+			case MenuCommand::Show_All:
+				Print(head);
+				break;
+			case MenuCommand::Search:
+				Search(head);
+				break;
+
+
+			case MenuCommand::Exit:
+				return;
+			default:
+				throw "Wrong command!";
+				break;
+			}
+			cout << endl;
+			Update_PersonMenu(head, tail);
+		}
+
+
+		void Individual_Additional()
+		{
+			Update_PersonMenu();
+		}
+
+	#pragma endregion
+
+
+		void All()
+		{
+			cout << "General 1 + 2:" << endl;
+			General_1();
+
+			cout << endl << "Individual + Additional:" << endl;
+			Individual_Additional();
+		}
+	}
 }
+
+
 
 #include "test.h";
 
@@ -1952,8 +2225,8 @@ void main()
 	SetConsoleOutputCP(RusCharset);
 	setlocale(LC_ALL, "rus");
 
-	//Sem_2::LR_1();
-	Sem_2::LR_2();
+	Sem_2::LR_2::All();
+
 	cout << endl;
 
 	system("pause");
