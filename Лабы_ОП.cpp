@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <exception>
+#include <fstream>
 
 using namespace std;
 
@@ -783,139 +784,6 @@ namespace Sem_1
 		}
 
 	#pragma endregion
-
-	namespace Denis
-		{
-			// Ввести строку с клавиатуры. Найти самое длинное слово в строке с учетом пробелов и знаков препинания «.!,?:;». 
-			// Заменить в этом слове все строчные буквы прописными (кириллица и латиница).
-			// Вывести полученную строку. Пример «Стол скатерть стул» преобразуется в «Стол СКАТЕРТЬ стул».
-			void LR_5_1()
-			{
-				char line[] = { "Стол скатерть стул ggggggggggggggggggggggggggggggggg" };
-				string stop_chars = " .!,?:;";
-				char* longest_start = &line[0];
-				int longest_len = 0;
-				char* curent_start = &line[0];
-				int curent_len = 1;
-				bool begin_from_next = false;
-
-				for (char* c = begin(line); c < end(line); c++)
-				{
-					char C = *c;
-					if (stop_chars.find(C) != -1 || C == '\0')
-					{
-						if (curent_len > longest_len)
-						{
-							longest_start = curent_start;
-							longest_len = curent_len;
-						}
-						begin_from_next = true;
-					}
-					else
-					{
-						if (begin_from_next)
-						{
-							curent_len = 1;
-							curent_start = c;
-							begin_from_next = false;
-						}
-						else
-							curent_len++;
-					}
-				}
-
-				for (char* c = longest_start; c < longest_start + longest_len; c++)
-				{
-					*c = toupper(*c);
-				}
-
-				cout << line << endl;
-			}
-
-			void LR_5_2()
-			{
-				string line = "Я люблю программировать";
-				//getline(cin, line);
-				string invert_line_witout_space = "";
-				for (int i = line.length() - 1; i >= 0; i--)
-				{
-					char c = line[i];
-					if (c != ' ')
-						invert_line_witout_space += c;
-				}
-
-				string invert_line = "";
-				int read_index = 0;
-				for (int i = 0; i < line.length(); i++)
-				{
-					invert_line += line[i] == ' ' ?
-						' ' :
-						invert_line_witout_space[read_index++];
-				}
-				cout << invert_line << endl;
-			}
-		}
-
-	namespace Dasha
-		{
-			bool is_simple(int a)
-			{
-				int col = 0;
-				for (int j = 1; j <= a; j++)
-				{
-					if (a % j == 0)
-						col++;
-					if (col > 2)
-						return false;
-				}
-				return true;
-			}
-
-			void LR_3_1()
-			{
-				int a, b, col;
-				cout << "Введите a:";
-				cin >> a;
-				cout << "Введите b:";
-				cin >> b;
-				for (int i = a + 1; i < b; i++)
-				{
-					if (is_simple(i))
-						cout << i << " ";
-				}
-			}
-
-			void LR_3_2()
-			{
-				int x, y;
-				cout << "Введите ширину таблицы : "; cin >> x;
-				cout << "Введите высоту таблицы : "; cin >> y;
-				for (int i = 1; i < (x + 1); i++) {
-					for (int j = 1; j < (y + 1); j++) {
-						cout << i * j << "\t";
-					}
-					cout << endl;
-				}
-			}
-
-			void LR_4_1()
-			{
-				int sum = 0;
-				const int size = 8;
-				bool flag = false;
-				int mas[size] = { 3, -6, 3, 3, 3, -7, 9, 4 };
-				for (int i = 0; i < size; i++)
-				{
-					if (flag && (mas[i] < 0))
-						break;
-					if (flag)
-						sum += mas[i];
-					if (mas[i] < 0)
-						flag = true;
-				}
-				cout << sum << "\n\n";
-			}
-		}
 
 }
 
@@ -2080,17 +1948,21 @@ namespace Sem_2
 			return creating_person;
 		}
 
-		void Create_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+		void Add_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail, Person* p)
 		{
-			Person* creating_person = Enter_Person_Data();
-
 			if (head == NULL)
 			{
-				head = Add_In_List(creating_person);
+				head = Add_In_List(p);
 				tail = head;
 			}
 			else
-				tail = Add_In_List(creating_person, tail);
+				tail = Add_In_List(p, tail);
+		}
+
+		void Create_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
+		{
+			Person* creating_person = Enter_Person_Data();
+			Add_Person(head, tail, creating_person);
 		}
 
 		void Delete_Person(Linked_PersonPointers*& head, Linked_PersonPointers*& tail)
@@ -2214,6 +2086,7 @@ namespace Sem_2
 
 	namespace LR_3
 	{
+	#pragma region General
 		int* Read_Numbers_From_File(const char file_name[], int& size)
 		{
 			int* data = NULL;
@@ -2221,21 +2094,13 @@ namespace Sem_2
 			fopen_s(&file, file_name, "r");
 			if (file)
 			{
-				__try
+				fscanf_s(file, "%d", &size);
+				data = new int[size];
+				for (int i = 0; i < size; i++)
 				{
-					fscanf_s(file, "%d", &size);
-					data = new int[size];
-					for (int i = 0; i < size; i++)
-					{
-						fscanf_s(file, "%d", &data[i]);
-					}
-
+					fscanf_s(file, "%d", &data[i]);
 				}
-				__finally
-				{
-					fclose(file);
-					delete file;
-				}
+				fclose(file);
 			}
 			return data;
 		}
@@ -2246,19 +2111,12 @@ namespace Sem_2
 			fopen_s(&file, file_name, "w");
 			if (file)
 			{
-				__try
+				fprintf_s(file, "%d\n", size);
+				for (int i = 0; i < size; i++)
 				{
-					fprintf_s(file, "%d", size);
-					for (int i = 0; i < size; i++)
-					{
-						fprintf_s(file, " %d", data[i]);
-					}
+					fprintf_s(file, " %d", data[i]);
 				}
-				__finally
-				{
-					fclose(file);
-					delete file;
-				}
+				fclose(file);
 			}
 		}
 
@@ -2299,44 +2157,53 @@ namespace Sem_2
 
 		Student* Read_Students(const char file_name[], int& count)
 		{
-			FILE* file = NULL;
 			Student* data = NULL;
-			freopen_s(&file, file_name, "r", stdin);
-			if (file)
+			ifstream input;
+			input.open(file_name);
+			if (input.is_open())
 			{
-				__try
+				input >> count;
+				data = new Student[count];
+				for (int i = 0; i < count; i++)
 				{
-					int count = 0;
-					scanf_s("%d", &count);
-					data = new Student[count];
-					for (int i = 0; i < count; i++)
-					{
-						char buf[256] = "";
-						scanf_s("%d", &data[i].Index); 
-						scanf_s(" %s", &buf, 2);
-						scanf_s("%lf\n", &data[i].Avarage_Mark);
-						data[i].SecondName = buf;
-					}
+					input >> data[i].Index;
+					input >> data[i].SecondName;
+					input >> data[i].Avarage_Mark;
 				}
-				__finally
-				{
-					fclose(file);
-					freopen_s(&file, "CON", "r", stdin);
-				}
+
+				input.close();
 			}
 			return data;
 		}
 
 		void Print_Table(const Student students[], const int count)
 		{
-			printf_s("+----+---------------------+----+\n");
-			printf_s("| %4s | %20s | %4s |\n", "№", "Second name", "AVG");
-			printf_s("+----+---------------------+----+\n");
+			char sep[] = "+------+----------------------+-----+\n";
+			cout << sep;
+			printf_s("| %4s | %20s | %3s |\n", "№", "Second name", "AVG");
+			cout << sep;
 			for (int i = 0; i < count; i++)
 			{
-				printf_s("| %4d | %20s | %4f |\n", students[i].Index, students[i].SecondName.c_str(), students[i].Avarage_Mark);
+				printf_s("| %4d | %20s | %2.1f |\n", students[i].Index, students[i].SecondName.c_str(), students[i].Avarage_Mark);
 			}
-			printf_s("+----+---------------------+----+\n");
+			cout << sep;
+		}
+
+		void SaveGoodStudents(const Student students[], const int count, const char file_name[])
+		{
+			ofstream out;
+			out.open(file_name);
+			if (out.is_open()) 
+			{
+				for (int i = 0; i < count; i++)
+				{
+					if (students[i].Avarage_Mark > 4)
+					{
+						out << students[i].Index << " " << students[i].SecondName << endl;
+					}
+				}
+				out.close();
+			}
 		}
 
 		void General_2()
@@ -2349,22 +2216,296 @@ namespace Sem_2
 				return;
 			}
 			Print_Table(students, count);
+			SaveGoodStudents(students, count, "LR_3_General_2_OUT.txt");
 		}
+
+	#pragma endregion
+
+#pragma region Individual
+
+		enum class MenuCommand
+		{
+			Exit,
+			Create,
+			Sort,
+			Edit,
+			Delete,
+			Show_All,
+			Search,
+			Save_As,
+			Load_As,
+			Save,
+			Load,
+		};
+
+		MenuCommand Show_Menu()
+		{
+			cout << "0) Exit" << endl;
+			cout << "1) Create" << endl;
+			cout << "2) Sort" << endl;
+			cout << "3) Edit" << endl;
+			cout << "4) Delete" << endl;
+			cout << "5) Show_All" << endl;
+			cout << "6) Search" << endl;
+			cout << "7) Save_As" << endl;
+			cout << "8) Load_As" << endl;
+			cout << "9) Save" << endl;
+			cout << "10) Loads" << endl;
+			cout << "Chouse command: ";
+			int i;
+			cin >> i;
+			return (MenuCommand)i;
+		}
+
+		void Save(LR_2::Linked_PersonPointers* head, const char filename[] = "LR_3_Individual.txt")
+		{
+			ofstream out;
+			out.open(filename);
+			if (out.is_open())
+			{
+				LR_2::Linked_PersonPointers* curent = head;
+				while (curent)
+				{
+					LR_2::Person p = *curent->Person;
+					out << p.Adress << ' ' << p.Name.FirstName << ' ' << p.Name.SecondName << ' ' << p.Name.Has_MidleName << ' ' << p.Name.MidleName << ' ' << p.Phone_Number;
+					curent = curent->Next;
+					if (curent)
+						out << endl;
+				}
+				out.close();
+			}
+		}
+
+		void Load(LR_2::Linked_PersonPointers*& head, LR_2::Linked_PersonPointers*& tail, const char filename[] = "LR_3_Individual.txt")
+		{
+			ifstream input;
+			input.open(filename);
+			if (input.is_open())
+			{
+				while (input.eof() == false)
+				{
+					LR_2::Person *p = new LR_2::Person;
+					input >> p->Adress;
+					input >> p->Name.FirstName;
+					input >> p->Name.SecondName;
+					input >> p->Name.Has_MidleName;
+					if (p->Name.Has_MidleName)
+						input >> p->Name.MidleName;
+					input >> p->Phone_Number;
+					LR_2::Add_Person(head, tail, p);
+				}
+				input.close();
+			}
+		}
+
+		void Save_As(LR_2::Linked_PersonPointers* head)
+		{
+			if (head == NULL)
+			{
+				cout << "List is Empty!" << endl;
+				return;
+			}
+
+			cout << "Enter SaveFile Name: ";
+			string filename;
+			cin >> filename;
+			filename += ".txt";
+			Save(head, filename.c_str());
+		}
+
+		void Load_As(LR_2::Linked_PersonPointers*& head, LR_2::Linked_PersonPointers*& tail)
+		{
+			cout << "Enter LoadFile Name: ";
+			string filename;
+			cin >> filename;
+			filename += ".txt";
+			Load(head, tail, filename.c_str());
+		}
+
+		void Individual()
+		{
+			LR_2::Linked_PersonPointers* head = NULL;
+			LR_2::Linked_PersonPointers* tail = NULL;
+			while (true)
+			{
+				switch (Show_Menu())
+				{
+				case MenuCommand::Create:
+					LR_2::Create_Person(head, tail);
+					break;
+				case MenuCommand::Delete:
+					LR_2::Delete_Person(head, tail);
+					break;
+				case MenuCommand::Edit:
+					LR_2::Edit_Person(head, tail);
+					break;
+				case MenuCommand::Search:
+					LR_2::Search(head);
+					break;
+				case MenuCommand::Show_All:
+					LR_2::Print(head);
+					break;
+				case MenuCommand::Sort:
+					LR_2::Sort(head, tail);
+					LR_2::Print(head);
+					break;
+
+				case MenuCommand::Save_As:
+					Save_As(head);
+					break;
+				case MenuCommand::Load_As:
+					Load_As(head, tail);
+					break;
+
+				case MenuCommand::Save:
+					Save(head);
+					break;
+				case MenuCommand::Load:
+					Load(head, tail);
+					break;
+
+				case MenuCommand::Exit:
+					return;
+				default:
+					cout << "Wrong command!";
+				}
+			}
+		}
+
+	#pragma endregion
+
+	#pragma region Additional
+
+		enum class DemoMenuCommand
+		{
+			Exit,
+			Add,
+			Del,
+			Print,
+			Save,
+			Load
+		};
+
+		void Additional()
+		{
+			const int size = 10;
+			const int str_size = 255;
+			char string_array[size][str_size];
+			int count = 0;
+			while (true)
+			{
+				cout << "0) Exit" << endl;
+				cout << "1) Add" << endl;
+				cout << "2) Del" << endl;
+				cout << "3) Print" << endl;
+				cout << "4) Save" << endl;
+				cout << "5) Load" << endl;
+				cout << "Chouse command: ";
+				int c;
+				cin >> c;
+				switch ((DemoMenuCommand)c)
+				{
+				case DemoMenuCommand::Exit:
+					return;
+				case DemoMenuCommand::Add:
+					if (count != size)
+						cin >> string_array[count++];
+					else
+						cout << "Array is full!";
+					break;
+				case DemoMenuCommand::Del:
+				{
+					if (count == 0)
+					{
+						cout << "Array is Empty!" << endl;
+						break;
+					}
+
+					int n;
+					cout << "Deleting index: ";
+					cin >> n;
+
+					if (count == 1 && n == 0)
+					{
+						count = 0;
+						break;
+					}
+
+					char* str1 = string_array[n];
+					char* str2 = string_array[--count];
+					for (int i = 0; i < str_size; i++)
+					{
+						str1[i] = str2[i];
+					}
+					break;
+				}
+				case DemoMenuCommand::Print:
+					if (count == 0)
+					{
+						cout << "Array is Empty!" << endl;
+						break;
+					}
+					for (int i = 0; i < count; i++)
+						cout << i + 1 << ") " << string_array[i] << endl;
+					cout << endl;
+					break;
+				case DemoMenuCommand::Save:
+				{
+					FILE* file = NULL;
+					freopen_s(&file, "LR_3_Additional.txt", "w", stdout);
+					if (file)
+					{
+						cout << count << endl;
+						for (int i = 0; i < count; i++)
+						{
+							cout << string_array[i] << endl;
+						}
+						fclose(file);
+						freopen_s(&file, "CON", "w", stdout);
+					}
+					break;
+				}
+				case DemoMenuCommand::Load:
+				{
+					FILE* file = NULL;
+					freopen_s(&file, "LR_3_Additional.txt", "r", stdin);
+					if (file)
+					{
+						cin >> count;
+						for (int i = 0; i < count; i++)
+						{
+							cin >> string_array[i];
+						}
+						fclose(file);
+						freopen_s(&file, "CON", "r", stdin);
+					}
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+
+	#pragma endregion
 
 
 		void All()
 		{
-			//cout << "General 1:" << endl;
-			//General_1();
+			cout << "General 1:" << endl;
+			General_1();
 
 			cout << "General 2:" << endl;
 			General_2();
 
+			cout << "Individual:" << endl;
+			Individual();
 
+			cout << "Additional:" << endl;
+			Additional();
 		}
 	}
 }
-
 
 
 #include "test.h";
@@ -2379,7 +2520,6 @@ void main()
 	setlocale(LC_ALL, "rus");
 
 	Sem_2::LR_3::All();
-
 	cout << endl;
 
 	system("pause");
